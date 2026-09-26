@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: amorena-postgres
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-amorena}
+      POSTGRES_USER: ${POSTGRES_USER:-amorena}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-CHANGE_ME_amorena_2026}
+    volumes:
+      - amorena-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-amorena} -d ${POSTGRES_DB:-amorena}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: amorena-pgadmin
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@amorena.com.br}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-CHANGE_ME_pgadmin_2026}
+    volumes:
+      - amorena-pgadmin:/var/lib/pgadmin
+
+volumes:
+  amorena-pgdata:
+  amorena-pgadmin:

@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply font-sans text-vinho font-light antialiased bg-creme;
+    background-image: radial-gradient(rgba(88, 18, 33, 0.040) 1px, transparent 1px),
+      radial-gradient(rgba(43, 18, 22, 0.030) 1px, transparent 1px);
+    background-size: 22px 22px, 22px 22px;
+    background-position: 0 0, 11px 11px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-vinho;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  ::selection {
+    @apply bg-bordo text-creme;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px; /* evita zoom automático no iOS */
+  }
+
+  *:focus-visible {
+    outline: 1px solid #581221;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .container-editorial {
+    @apply mx-auto w-full max-w-[1240px] px-5 sm:px-8;
+  }
+
+  .divider-bordo {
+    @apply h-px w-full bg-bordo/35;
+  }
+
+  .label-eyebrow {
+    @apply font-sans text-[10px] sm:text-[11px] uppercase tracking-editorial text-bordo/80;
+  }
+
+  .section-number {
+    @apply font-serif italic text-2xl sm:text-3xl text-bordo/70 align-top;
+  }
+
+  .btn-bordo {
+    @apply inline-flex items-center justify-center gap-2 bg-bordo text-creme
+           px-6 py-3.5 text-[12px] uppercase tracking-wideish font-medium
+           border border-bordo
+           hover:bg-bordo-deep hover:border-bordo-deep
+           active:translate-y-px transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent text-bordo
+           border border-bordo px-6 py-3.5 text-[12px] uppercase tracking-wideish font-medium
+           hover:bg-bordo hover:text-creme
+           active:translate-y-px transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent text-vinho
+           border border-bordo/15 px-5 py-3 text-[12px] uppercase tracking-wideish font-medium
+           hover:border-bordo hover:text-bordo
+           transition-colors duration-200;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-none px-3 py-1.5 border border-bordo/20 text-[11px] uppercase tracking-wideish text-bordo;
+  }
+
+  .link-underline {
+    @apply relative inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute left-0 -bottom-0.5 h-px w-full bg-bordo origin-left scale-x-0 transition-transform duration-300;
+  }
+  .link-underline:hover::after {
+    @apply scale-x-100;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
