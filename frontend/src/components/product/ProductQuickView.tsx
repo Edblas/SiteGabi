@@ -10,13 +10,22 @@ interface Props {
   onClose: () => void
 }
 
+function firstAvailableSize(product: Product, colorId: string): Size | null {
+  const sizes = product.availableSizes
+  for (const s of sizes) {
+    if (getStock(product, colorId, s) > 0) return s
+  }
+  return sizes[0] ?? null
+}
+
 export default function ProductQuickView({ product, onClose }: Props) {
   const navigate = useNavigate()
   const { addToCart } = useCart()
   const { trackEvent } = useAnalytics()
   const [activeImg, setActiveImg] = useState(0)
   const [color, setColor] = useState(product.colorIds[0])
-  const [size, setSize] = useState<Size | null>(null)
+  const [size, setSize] = useState<Size | null>(() => firstAvailableSize(product, product.colorIds[0]))
+  const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -27,6 +36,20 @@ export default function ProductQuickView({ product, onClose }: Props) {
       document.body.style.overflow = ''
     }
   }, [onClose])
+
+  useEffect(() => {
+    const first = firstAvailableSize(product, color)
+    setSize((prev) => {
+      if (prev && getStock(product, color, prev) > 0) return prev
+      return first
+    })
+  }, [product, color])
+
+  useEffect(() => {
+    if (!toast) return
+    const t = window.setTimeout(() => setToast(null), 2200)
+    return () => window.clearTimeout(t)
+  }, [toast])
 
   const price = product.promotionalPriceInCents ?? product.priceInCents
   const stock = color && size ? getStock(product, color, size) : 0
@@ -171,13 +194,29 @@ export default function ProductQuickView({ product, onClose }: Props) {
                       qty: 1,
                       unitPrice: res.added?.unitPrice,
                     })
-                    onClose()
+                    setToast(`${product.name} adicionada à sacola →`)
+                    window.setTimeout(() => onClose(), 520)
                   }
                 }}
                 className="btn-bordo disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Adicionar ao carrinho
               </button>
+              {toast && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="flex items-center gap-3 border border-bordo/20 bg-rose-soft/30 px-4 py-2.5 text-vinho"
+                >
+                  <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-bordo" />
+                  <span className="font-serif italic text-sm leading-snug">{toast}</span>
+                </div>
+              )}
+              {(!size || stock === 0) && (
+                <p className="text-right text-[10px] uppercase tracking-[0.24em] text-bordo/85">
+                  Selecione um tamanho disponível
+                </p>
+              )}
               <a
                 href={whatsLink}
                 target="_blank"

@@ -1,12 +1,20 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import type { Size } from '../types/product'
+import type { Product, Size } from '../types/product'
 import { PRODUCTS, formatCurrency, getCategory, getColor, getStock } from '../data/seed'
 import ProductCard from '../components/product/ProductCard'
 import { siteConfig } from '../config/siteConfig'
 import useSEO from '../hooks/useSEO'
 import { useCart } from '../context/CartContext'
 import { useAnalytics } from '../hooks/useAnalytics'
+
+function firstAvailableSize(product: Product, colorId: string): Size | null {
+  const sizes = product.availableSizes
+  for (const s of sizes) {
+    if (getStock(product, colorId, s) > 0) return s
+  }
+  return sizes[0] ?? null
+}
 
 export default function ProductPage() {
   const { slug } = useParams()
@@ -26,8 +34,11 @@ export default function ProductPage() {
 
   const [activeImg, setActiveImg] = useState(0)
   const [colorId, setColorId] = useState(product?.colorIds[0] ?? '')
-  const [size, setSize] = useState<Size | null>(null)
+  const [size, setSize] = useState<Size | null>(
+    product ? firstAvailableSize(product, product.colorIds[0] ?? '') : null,
+  )
   const [qty, setQty] = useState(1)
+  const [toast, setToast] = useState<string | null>(null)
 
   const price = useMemo(
     () => (product ? product.promotionalPriceInCents ?? product.priceInCents : 0),
@@ -41,6 +52,23 @@ export default function ProductPage() {
     }
     return plans
   }, [price])
+
+  // Auto-selecionar primeiro tamanho disponível ao trocar de cor
+  useEffect(() => {
+    if (!product || !colorId) return
+    const first = firstAvailableSize(product, colorId)
+    setSize((prev) => {
+      if (prev && getStock(product, colorId, prev) > 0) return prev
+      return first
+    })
+  }, [product, colorId])
+
+  // Toast desaparece automaticamente após 2.2s
+  useEffect(() => {
+    if (!toast) return
+    const t = window.setTimeout(() => setToast(null), 2200)
+    return () => window.clearTimeout(t)
+  }, [toast])
 
   if (!product) {
     return (
@@ -239,12 +267,30 @@ export default function ProductPage() {
                     qty,
                     unitPrice: res.added?.unitPrice,
                   })
+                  setToast(`${product.name} · ${qty} un. adicionada${qty === 1 ? '' : 's'} à sacola →`)
                 }
               }}
               className="btn-bordo w-full disabled:cursor-not-allowed disabled:opacity-40"
             >
               Adicionar ao carrinho — {formatCurrency(price * qty)}
             </button>
+            {!hasSelection && (
+              <p className="mt-2 text-right text-[11px] uppercase tracking-editorial text-bordo/85">
+                Selecione cor e tamanho para continuar
+              </p>
+            )}
+            {toast && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="mt-3 flex items-center gap-3 border border-bordo/20 bg-rose-soft/30 px-4 py-3 text-vinho shadow-[0_0_40px_rgba(88,18,33,0.12)]"
+              >
+                <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-bordo" />
+                <span className="font-serif italic text-[15px] leading-snug text-vinho md:text-base">
+                  {toast}
+                </span>
+              </div>
+            )}
 
             <a href={whatsLink} target="_blank" rel="noopener noreferrer" className="btn-outline w-full">
               Pedir pelo WhatsApp
