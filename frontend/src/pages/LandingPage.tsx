@@ -169,7 +169,7 @@ export default function LandingPage() {
             onClick={handleBuyOnline}
             aria-label="Comprar online — abrir a loja virtual"
           >
-            Comprar online
+            {siteConfig.ctaLabels.buyOnline}
           </CtaButton>
 
           <CtaButton
@@ -179,7 +179,7 @@ export default function LandingPage() {
             target="_blank"
             onClick={handleWhatsApp}
           >
-            Falar no WhatsApp
+            {siteConfig.ctaLabels.whatsapp}
           </CtaButton>
 
           <CtaButton
@@ -190,19 +190,19 @@ export default function LandingPage() {
             onClick={handleVipGroup}
             caption={siteConfig.vipGroupCaption}
           >
-            Grupo VIP
+            {siteConfig.ctaLabels.vipGroup}
           </CtaButton>
 
           {showStore ? (
             <div style={{ opacity: 0, animation: 'fadeUp 650ms ease-out 820ms 1 both' }} className="space-y-4">
               <CtaButton variant="ghost" onClick={() => handleStore(false)}>
-                Voltar — Ocultar loja física
+                {siteConfig.ctaLabels.hideStore}
               </CtaButton>
               <StoreAddressBlock compact />
             </div>
           ) : (
             <CtaButton variant="secondary" delay={860} onClick={() => handleStore(true)}>
-              Visite a loja
+              {siteConfig.ctaLabels.visitStore}
             </CtaButton>
           )}
 
@@ -210,9 +210,9 @@ export default function LandingPage() {
             variant="ghost"
             delay={940}
             onClick={handleNovidades}
-            caption="As peças que chegaram agora"
+            caption={siteConfig.ctaLabels.novidadesCaption}
           >
-            Novidades
+            {siteConfig.ctaLabels.novidades}
           </CtaButton>
         </nav>
 

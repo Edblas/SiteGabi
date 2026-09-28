@@ -35,7 +35,7 @@ export default function LojaFisicaPage() {
           rel="noopener noreferrer"
           className="btn-outline"
         >
-          Falar no WhatsApp
+          {siteConfig.ctaLabels.whatsapp}
         </a>
       </footer>
     </section>

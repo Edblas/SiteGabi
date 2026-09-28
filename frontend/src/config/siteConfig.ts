@@ -50,6 +50,16 @@ export interface SiteConfig {
     vipGroup: string
     whatsappStoreContact: string
   }
+
+  ctaLabels: {
+    buyOnline: string
+    whatsapp: string
+    vipGroup: string
+    visitStore: string
+    novidades: string
+    novidadesCaption: string
+    hideStore: string
+  }
 }
 
 const WHATSAPP_RAW = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
@@ -79,7 +89,7 @@ export const siteConfig: SiteConfig = {
   whatsappNumber: WHATSAPP_RAW || '5535997061703',
   whatsappDefaultMessage: 'Olá Gabi! Vim pelo site da Amorena e gostaria de ajuda.',
 
-  vipGroupUrl: 'TODO_INFORMAR_LINK_DO_GRUPO_VIP',
+  vipGroupUrl: 'https://chat.whatsapp.com/BmTxtSq0GQlKEJMHPvwp0h?mode=gi_t',
   vipGroupCaption: 'Ofertas e lançamentos em primeira mão',
 
   store: {
@@ -91,7 +101,7 @@ export const siteConfig: SiteConfig = {
   seo: {
     landingTitle: 'Amorena — Moda Feminina',
     landingDescription:
-      'Amorena veste você. Compre online, fale no WhatsApp com a Gabi, entre no grupo VIP ou visite nossa loja.',
+      'Amorena veste você. Compre online, fale com a Gabi, entre no grupo VIP ou visite nossa loja em Alfenas · MG.',
     storeTitle: 'Loja · Amorena Moda Feminina',
     storeDescription:
       'Coleção Amorena — vestidos, conjuntos, blusas, calças, saias, acessórios e bazar.',
@@ -104,17 +114,22 @@ export const siteConfig: SiteConfig = {
     vipGroup: waLink('Olá Gabi! Quero fazer parte do Grupo VIP Amorena e receber novidades em primeira mão.'),
     whatsappStoreContact: waLink('Olá Gabi! Vim pelo site e gostaria de informações sobre a loja física da Amorena.'),
   },
+
+  ctaLabels: {
+    buyOnline: 'Comprar online',
+    whatsapp: 'Falar com a Gabi',
+    vipGroup: 'Grupo VIP',
+    visitStore: 'Visite a loja',
+    novidades: 'Novidades',
+    novidadesCaption: 'As peças que chegaram agora',
+    hideStore: 'Voltar — Ocultar loja física',
+  },
 }
 
 /**
  * Placeholders claramente marcados para serem resolvidos antes do deploy.
  */
 export const TODO_PENDING_DATA = [
-  {
-    id: 'vip-group-url',
-    place: 'siteConfig.vipGroupUrl',
-    note: 'Link de convite do Grupo VIP no WhatsApp.',
-  },
   {
     id: 'store-hours',
     place: 'siteConfig.store.hours',
