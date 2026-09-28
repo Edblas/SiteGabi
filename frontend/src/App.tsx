@@ -14,6 +14,7 @@ import AnnouncementBar from './components/layout/AnnouncementBar'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import WhatsAppButton from './components/layout/WhatsAppButton'
+import CartFabButton from './components/layout/CartFabButton'
 import CartDrawer from './components/cart/CartDrawer'
 import { CartProvider } from './context/CartContext'
 import { useAnalytics } from './hooks/useAnalytics'
@@ -25,6 +26,7 @@ function StoreLayout({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <CartFabButton />
       <WhatsAppButton />
       <CartDrawer />
     </div>
