@@ -408,6 +408,16 @@ export const formatCurrency = (cents: number): string =>
     minimumFractionDigits: 2,
   })
 
+export const CASH_DISCOUNT_PCT = 10
+
+export function getCashPriceInCents(valueInCents: number): number {
+  return Math.round(valueInCents * (1 - CASH_DISCOUNT_PCT / 100))
+}
+
+export function getEffectivePrice(product: Product): number {
+  return product.promotionalPriceInCents ?? product.priceInCents
+}
+
 export function getStock(product: Product, colorId: string, size: string): number {
   return (
     product.variations.find((v) => v.colorId === colorId && v.size === size)?.stock ?? 0

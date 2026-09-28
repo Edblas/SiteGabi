@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Product } from '../../types/product'
-import { COLORS, formatCurrency, getColor } from '../../data/seed'
+import { COLORS, formatCurrency, getCashPriceInCents, getColor, CASH_DISCOUNT_PCT, getEffectivePrice } from '../../data/seed'
 import ProductQuickView from './ProductQuickView'
 
 interface Props {
@@ -16,8 +16,9 @@ export default function ProductCard({ product, priority = false, layout = 'defau
   const firstImage = product.images[0]
   const secondImage = product.images[1] ?? product.images[0]
 
-  const price = product.promotionalPriceInCents ?? product.priceInCents
+  const price = getEffectivePrice(product)
   const hasDiscount = !!product.promotionalPriceInCents
+  const cashPrice = getCashPriceInCents(price)
 
   const colors = product.colorIds
     .map((id) => getColor(id))
@@ -96,8 +97,8 @@ export default function ProductCard({ product, priority = false, layout = 'defau
                 </p>
               )}
               <p className="font-serif text-xl text-vinho">{formatCurrency(price)}</p>
-              <p className="mt-0.5 text-[10px] uppercase tracking-wideish text-vinho/60">
-                em até 6x s/ juros
+              <p className="mt-0.5 font-serif text-base text-bordo">
+                {formatCurrency(cashPrice)} <span className="text-[10px] uppercase tracking-wideish text-bordo/85">· à vista -{CASH_DISCOUNT_PCT}%</span>
               </p>
             </div>
           </div>

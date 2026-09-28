@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Product, Size } from '../../types/product'
-import { formatCurrency, getColor, getStock } from '../../data/seed'
+import { CASH_DISCOUNT_PCT, formatCurrency, getCashPriceInCents, getColor, getEffectivePrice, getStock } from '../../data/seed'
 import { useCart } from '../../context/CartContext'
 import { useAnalytics } from '../../hooks/useAnalytics'
 
@@ -51,7 +51,8 @@ export default function ProductQuickView({ product, onClose }: Props) {
     return () => window.clearTimeout(t)
   }, [toast])
 
-  const price = product.promotionalPriceInCents ?? product.priceInCents
+  const price = getEffectivePrice(product)
+  const cashPrice = getCashPriceInCents(price)
   const stock = color && size ? getStock(product, color, size) : 0
   const currentColorName = getColor(color)?.label ?? ''
 
@@ -115,17 +116,25 @@ export default function ProductQuickView({ product, onClose }: Props) {
             <h2 className="mt-2 font-serif text-4xl leading-tight text-vinho">{product.name}</h2>
             <p className="mt-1 font-serif italic text-lg text-bordo/80">{product.subtitle}</p>
 
-            <div className="mt-6 flex items-baseline gap-3">
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2">
               {product.promotionalPriceInCents && (
                 <span className="text-sm text-vinho/40 line-through">
                   {formatCurrency(product.priceInCents)}
                 </span>
               )}
               <span className="font-serif text-3xl text-vinho">{formatCurrency(price)}</span>
-              <span className="text-[10px] uppercase tracking-wideish text-vinho/60">
-                6x s/ juros · {formatCurrency(Math.round(price / 6))}
+              <span className="chip bg-bordo text-creme border-bordo text-[10px]">
+                -{CASH_DISCOUNT_PCT}% à vista
               </span>
             </div>
+
+            <p className="mt-2 font-serif text-2xl text-bordo">
+              {formatCurrency(cashPrice)}{' '}
+              <span className="text-[10px] uppercase tracking-wideish text-bordo/80">· à vista</span>
+            </p>
+            <p className="mt-1 text-[10px] uppercase tracking-wideish text-vinho/60">
+              6x s/ juros · {formatCurrency(Math.round(price / 6))}
+            </p>
 
             <p className="mt-6 text-sm leading-relaxed text-vinho/75 max-w-md">
               {product.shortDescription}

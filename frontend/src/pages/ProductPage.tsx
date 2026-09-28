@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Product, Size } from '../types/product'
-import { PRODUCTS, formatCurrency, getCategory, getColor, getStock } from '../data/seed'
+import { PRODUCTS, CASH_DISCOUNT_PCT, formatCurrency, getCashPriceInCents, getCategory, getColor, getEffectivePrice, getStock } from '../data/seed'
 import ProductCard from '../components/product/ProductCard'
 import { siteConfig } from '../config/siteConfig'
 import useSEO from '../hooks/useSEO'
@@ -41,9 +41,11 @@ export default function ProductPage() {
   const [toast, setToast] = useState<string | null>(null)
 
   const price = useMemo(
-    () => (product ? product.promotionalPriceInCents ?? product.priceInCents : 0),
+    () => (product ? getEffectivePrice(product) : 0),
     [product],
   )
+  const cashPrice = useMemo(() => getCashPriceInCents(price), [price])
+  const cashLinePrice = useMemo(() => getCashPriceInCents(price * qty), [price, qty])
 
   const installments = useMemo(() => {
     const plans: { times: number; value: number }[] = []
@@ -158,20 +160,26 @@ export default function ProductPage() {
               </span>
             )}
             <span className="font-serif text-5xl text-vinho">{formatCurrency(price)}</span>
-            <span className="chip bg-rose-soft border-rose-nude/70 text-bordo-deep">
-              8% OFF à vista
+            <span className="chip bg-bordo text-creme border-bordo">
+              -{CASH_DISCOUNT_PCT}% à vista
             </span>
           </div>
 
-          <div className="mt-4 space-y-1.5 text-[12px] uppercase tracking-wideish text-vinho/65">
-            <p>em até 6x sem juros no cartão</p>
-            <ul className="flex flex-wrap gap-x-6 gap-y-1">
-              {installments.map((p) => (
-                <li key={p.times} className="font-serif text-base normal-case tracking-normal text-vinho/80">
-                  {p.times}x · {formatCurrency(p.value)}
-                </li>
-              ))}
-            </ul>
+          <div className="mt-4 space-y-3">
+            <p className="font-serif text-3xl text-bordo">
+              {formatCurrency(cashPrice)}{' '}
+              <span className="text-[11px] uppercase tracking-editorial text-bordo/80">· pagamento à vista</span>
+            </p>
+            <div className="space-y-1.5 text-[12px] uppercase tracking-wideish text-vinho/65">
+              <p>em até 6x sem juros no cartão</p>
+              <ul className="flex flex-wrap gap-x-6 gap-y-1">
+                {installments.map((p) => (
+                  <li key={p.times} className="font-serif text-base normal-case tracking-normal text-vinho/80">
+                    {p.times}x · {formatCurrency(p.value)}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <p className="mt-8 text-[15px] leading-relaxed text-vinho/80 max-w-lg">
@@ -274,6 +282,11 @@ export default function ProductPage() {
             >
               Adicionar ao carrinho — {formatCurrency(price * qty)}
             </button>
+            {hasSelection && (
+              <p className="text-center font-serif italic text-sm text-bordo/85">
+                ou {formatCurrency(cashLinePrice)} à vista (−{CASH_DISCOUNT_PCT}%)
+              </p>
+            )}
             {!hasSelection && (
               <p className="mt-2 text-right text-[11px] uppercase tracking-editorial text-bordo/85">
                 Selecione cor e tamanho para continuar

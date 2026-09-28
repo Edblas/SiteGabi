@@ -1,19 +1,23 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
-import { formatCurrency } from '../../data/seed'
+import { CASH_DISCOUNT_PCT, formatCurrency, getCashPriceInCents } from '../../data/seed'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { siteConfig } from '../../config/siteConfig'
 
 function buildCheckoutMessage(
   items: ReturnType<typeof useCart>['items'],
   subtotal: number,
+  subtotalCash: number,
   ref: string,
 ): string {
   const lines = items
     .map(
-      (it, idx) =>
-        `${idx + 1}. ${it.productName} (${it.colorName} · ${it.size}) · ${it.qty} ${it.qty === 1 ? 'un.' : 'un.'} · ${formatCurrency(it.unitPrice)} cada = ${formatCurrency(it.qty * it.unitPrice)}`,
+      (it, idx) => {
+        const lineTotal = it.qty * it.unitPrice
+        const lineCash = getCashPriceInCents(lineTotal)
+        return `${idx + 1}. ${it.productName} (${it.colorName} · ${it.size}) · ${it.qty} ${it.qty === 1 ? 'un.' : 'un.'} · ${formatCurrency(it.unitPrice)} cada = ${formatCurrency(lineTotal)} · à vista ${formatCurrency(lineCash)}`
+      },
     )
     .join('\n')
 
@@ -24,6 +28,7 @@ function buildCheckoutMessage(
     lines,
     ``,
     `SUBTOTAL: ${formatCurrency(subtotal)}`,
+    `SUBTOTAL À VISTA (−${CASH_DISCOUNT_PCT}%): ${formatCurrency(subtotalCash)}`,
     `FRETE: a confirmar pela Gabi`,
     `Referência: ${ref}`,
     ``,
@@ -67,6 +72,8 @@ export default function CartDrawer() {
   const { pathname } = useLocation()
   const href = typeof window !== 'undefined' ? window.location.href : pathname
   const firstBtnRef = useRef<HTMLButtonElement | null>(null)
+  const plural = itemCount === 1 ? 'item' : 'itens'
+  const subtotalCash = useMemo(() => getCashPriceInCents(subtotal), [subtotal])
 
   // 1) Body overflow lock
   useEffect(() => {
@@ -88,11 +95,10 @@ export default function CartDrawer() {
     return () => window.removeEventListener('keydown', onKey)
   }, [drawerOpen, closeDrawer])
 
-  if (!drawerOpen) return null
-
-  const plural = itemCount === 1 ? 'item' : 'itens'
-  const finalMessage = buildCheckoutMessage(items, subtotal, href)
+  const finalMessage = buildCheckoutMessage(items, subtotal, subtotalCash, href)
   const finalizeHref = items.length > 0 ? waLink(finalMessage) : undefined
+
+  if (!drawerOpen) return null
 
   const handleFinalize = () => {
     if (!finalizeHref) return
@@ -172,6 +178,13 @@ export default function CartDrawer() {
               <dd className="font-serif text-xl text-vinho">{formatCurrency(subtotal)}</dd>
             </div>
             <div className="flex items-baseline justify-between gap-4">
+              <dt className="label-eyebrow">Subtotal à vista</dt>
+              <dd className="font-serif text-xl text-bordo">
+                {formatCurrency(subtotalCash)}
+                <span className="ml-2 text-[10px] uppercase tracking-wideish text-bordo/80">−{CASH_DISCOUNT_PCT}%</span>
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4">
               <dt className="label-eyebrow">Frete</dt>
               <dd className="font-serif italic text-sm text-bordo/70">a confirmar pela Gabi</dd>
             </div>
@@ -179,6 +192,13 @@ export default function CartDrawer() {
               <dt className="label-eyebrow">Total</dt>
               <dd className="font-display text-2xl tracking-tight text-bordo">
                 {formatCurrency(subtotal)}
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="label-eyebrow">Total à vista</dt>
+              <dd className="font-display text-2xl tracking-tight text-bordo-deep">
+                {formatCurrency(subtotalCash)}
+                <span className="ml-2 text-[10px] uppercase tracking-wideish text-bordo-deep/80">−{CASH_DISCOUNT_PCT}%</span>
               </dd>
             </div>
           </dl>
@@ -261,6 +281,8 @@ interface LineProps {
 
 function CartLine({ item, onUpdateQty, onRemove }: LineProps) {
   const lineTotal = item.qty * item.unitPrice
+  const unitCash = getCashPriceInCents(item.unitPrice)
+  const lineCash = getCashPriceInCents(lineTotal)
   return (
     <li className="grid grid-cols-12 gap-3 py-5">
       <Link
@@ -302,8 +324,11 @@ function CartLine({ item, onUpdateQty, onRemove }: LineProps) {
             <span className="text-bordo/35">•</span>
             <span>Tam · {item.size}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-[0.24em] text-vinho/50">
-            Unitário · {formatCurrency(item.unitPrice)}
+          <div className="mt-3 space-y-1 text-[11px] uppercase tracking-[0.24em] text-vinho/50">
+            <div>Unitário · {formatCurrency(item.unitPrice)}</div>
+            <div className="text-bordo/80 font-serif text-sm normal-case tracking-normal">
+              à vista · {formatCurrency(unitCash)} <span className="uppercase text-[10px] tracking-[0.24em] text-bordo/70">(−{CASH_DISCOUNT_PCT}%)</span>
+            </div>
           </div>
         </div>
 
@@ -334,6 +359,9 @@ function CartLine({ item, onUpdateQty, onRemove }: LineProps) {
               <div className="label-eyebrow">Linha</div>
               <div className="font-display text-xl tracking-tight text-bordo md:text-2xl">
                 {formatCurrency(lineTotal)}
+              </div>
+              <div className="mt-0.5 font-serif text-base text-bordo-deep md:text-lg">
+                à vista · {formatCurrency(lineCash)}
               </div>
             </div>
             <button
