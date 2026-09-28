@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         <Link to="/" className="btn-bordo">
           Voltar para o início
         </Link>
-        <Link to="/categoria/vestidos" className="btn-ghost">
+        <Link to="/loja/colecao" className="btn-ghost">
           Ver coleção
         </Link>
       </div>

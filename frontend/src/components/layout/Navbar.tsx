@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { CATEGORIES } from '../../data/seed'
+import { useCart } from '../../context/CartContext'
 
 function Logo({ className = '' }: { className?: string }) {
   return (
@@ -84,6 +85,9 @@ function MenuIcon({ open }: { open: boolean }) {
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const { itemCount, toggleDrawer } = useCart()
+  const badgeLabel = itemCount > 99 ? '99+' : String(itemCount)
+  const plural = itemCount === 1 ? 'item' : 'itens'
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-bordo/15 bg-creme/85 backdrop-blur">
@@ -140,11 +144,18 @@ export default function Navbar() {
           <button type="button" aria-label="Acessar minha conta" className="hidden sm:inline-flex p-2 text-vinho hover:text-bordo">
             <UserIcon className="h-5 w-5" />
           </button>
-          <button type="button" aria-label="Abrir sacola (0 itens)" className="relative inline-flex p-2 text-vinho hover:text-bordo">
+          <button
+            type="button"
+            onClick={toggleDrawer}
+            aria-label={`Abrir sacola (${itemCount} ${plural})`}
+            className="relative inline-flex p-2 text-vinho hover:text-bordo"
+          >
             <BagIcon className="h-5 w-5" />
-            <span className="pointer-events-none absolute right-1 top-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-bordo text-[9px] font-semibold text-creme">
-              0
-            </span>
+            {itemCount > 0 && (
+              <span className="pointer-events-none absolute right-1 top-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-bordo text-[9px] font-semibold text-creme">
+                {badgeLabel}
+              </span>
+            )}
           </button>
         </div>
       </div>

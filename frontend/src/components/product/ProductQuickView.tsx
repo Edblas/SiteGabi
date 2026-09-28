@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Product, Size } from '../../types/product'
 import { formatCurrency, getColor, getStock } from '../../data/seed'
+import { useCart } from '../../context/CartContext'
+import { useAnalytics } from '../../hooks/useAnalytics'
 
 interface Props {
   product: Product
@@ -10,6 +12,8 @@ interface Props {
 
 export default function ProductQuickView({ product, onClose }: Props) {
   const navigate = useNavigate()
+  const { addToCart } = useCart()
+  const { trackEvent } = useAnalytics()
   const [activeImg, setActiveImg] = useState(0)
   const [color, setColor] = useState(product.colorIds[0])
   const [size, setSize] = useState<Size | null>(null)
@@ -154,6 +158,22 @@ export default function ProductQuickView({ product, onClose }: Props) {
               <button
                 type="button"
                 disabled={!size || stock === 0}
+                onClick={() => {
+                  if (!size) return
+                  const res = addToCart(product, color, size, 1)
+                  if (res.ok) {
+                    trackEvent('cart_add_item_quickview', {
+                      productId: product.id,
+                      sku: res.added?.sku,
+                      slug: product.slug,
+                      colorId: color,
+                      size,
+                      qty: 1,
+                      unitPrice: res.added?.unitPrice,
+                    })
+                    onClose()
+                  }
+                }}
                 className="btn-bordo disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Adicionar ao carrinho
@@ -168,7 +188,7 @@ export default function ProductQuickView({ product, onClose }: Props) {
               </a>
               <button
                 type="button"
-                onClick={() => navigate(`/produto/${product.slug}`)}
+                onClick={() => navigate(`/loja/produto/${product.slug}`)}
                 className="btn-ghost text-center"
               >
                 Ver ficha completa

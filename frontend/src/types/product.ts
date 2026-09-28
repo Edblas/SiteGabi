@@ -5,7 +5,6 @@ export type CategorySlug =
   | 'calcas'
   | 'saias'
   | 'acessorios'
-  | 'bazar'
 
 export interface Category {
   slug: CategorySlug

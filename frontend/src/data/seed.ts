@@ -48,12 +48,6 @@ export const CATEGORIES: Category[] = [
     eyebrow: '06 · Coleção',
     lead: 'O detalhe que transforma o olhar.',
   },
-  {
-    slug: 'bazar',
-    name: 'Bazar',
-    eyebrow: '07 · Coleção',
-    lead: 'Últimas unidades. Preços especiais.',
-  },
 ]
 
 /**
@@ -383,11 +377,11 @@ export const PRODUCTS: Product[] = [
     id: 'p-012',
     slug: 'brinco-perola-gota',
     name: 'Brinco Pérola Gota',
-    subtitle: 'Bazar · Últimas unidades',
+    subtitle: 'Acessórios · Últimas unidades',
     shortDescription: 'Par de brincos em metal dourado fosco e pérola gota.',
     longDescription:
       'Par de brincos em banho dourado fosco antialérgico. Pérola gota de 14 mm. Fechamento por pressão. Peça atemporal.',
-    category: 'bazar',
+    category: 'acessorios',
     composition: 'Metal com banho dourado. Pérola de vidro. Peças antialérgicas.',
     care: 'Guardar em local arejado. Evitar contato com perfumes e cosméticos.',
     priceInCents: 11800,
@@ -399,7 +393,7 @@ export const PRODUCTS: Product[] = [
     colorIds: ['preto', 'creme'],
     availableSizes: ['Único'],
     variations: [{ sku: 'AMO-012-PE-UN', colorId: 'creme', size: 'Único', stock: 3 }],
-    tags: ['bazar', 'ultimas-unidades'],
+    tags: ['ultimas-unidades'],
   },
 ]
 

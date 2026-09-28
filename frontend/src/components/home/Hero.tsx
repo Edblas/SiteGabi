@@ -32,10 +32,10 @@ export default function Hero() {
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Link to="/categoria/vestidos" className="btn-bordo">
+              <Link to="/loja/colecao" className="btn-bordo">
                 Comprar coleção
               </Link>
-              <Link to="/categoria/conjuntos" className="btn-ghost">
+              <Link to="/loja/categoria/conjuntos" className="btn-ghost">
                 Ver conjuntos
               </Link>
             </div>

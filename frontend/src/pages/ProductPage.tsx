@@ -5,10 +5,14 @@ import { PRODUCTS, formatCurrency, getCategory, getColor, getStock } from '../da
 import ProductCard from '../components/product/ProductCard'
 import { siteConfig } from '../config/siteConfig'
 import useSEO from '../hooks/useSEO'
+import { useCart } from '../context/CartContext'
+import { useAnalytics } from '../hooks/useAnalytics'
 
 export default function ProductPage() {
   const { slug } = useParams()
   const navigate = useNavigate()
+  const { addToCart } = useCart()
+  const { trackEvent } = useAnalytics()
 
   const product = PRODUCTS.find((p) => p.slug === slug)
 
@@ -74,7 +78,7 @@ export default function ProductPage() {
       <nav className="mb-6 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-editorial text-vinho/55">
         <Link to="/" className="link-underline">Início</Link>
         <span className="text-bordo/40">/</span>
-        <Link to={`/categoria/${product.category}`} className="link-underline">
+        <Link to={`/loja/categoria/${product.category}`} className="link-underline">
           {category?.name ?? product.category}
         </Link>
         <span className="text-bordo/40">/</span>
@@ -222,7 +226,21 @@ export default function ProductPage() {
             <button
               type="button"
               disabled={!hasSelection}
-              onClick={() => alert('Carrinho será implementado na Fase 3.')}
+              onClick={() => {
+                if (!product || !colorId || !size) return
+                const res = addToCart(product, colorId, size, qty)
+                if (res.ok) {
+                  trackEvent('cart_add_item', {
+                    productId: product.id,
+                    sku: res.added?.sku,
+                    slug: product.slug,
+                    colorId,
+                    size,
+                    qty,
+                    unitPrice: res.added?.unitPrice,
+                  })
+                }
+              }}
               className="btn-bordo w-full disabled:cursor-not-allowed disabled:opacity-40"
             >
               Adicionar ao carrinho — {formatCurrency(price * qty)}

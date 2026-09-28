@@ -104,7 +104,7 @@ export const siteConfig: SiteConfig = {
       'Amorena veste você. Compre online, fale com a Gabi, entre no grupo VIP ou visite nossa loja em Alfenas · MG.',
     storeTitle: 'Loja · Amorena Moda Feminina',
     storeDescription:
-      'Coleção Amorena — vestidos, conjuntos, blusas, calças, saias, acessórios e bazar.',
+      'Coleção Amorena — vestidos, conjuntos, blusas, calças, saias e acessórios.',
     ogImageUrl: undefined,
   },
 

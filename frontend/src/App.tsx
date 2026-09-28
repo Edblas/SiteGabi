@@ -8,11 +8,14 @@ import ProductPage from './pages/ProductPage'
 import NovidadesPage from './pages/NovidadesPage'
 import LojaFisicaPage from './pages/LojaFisicaPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ColecaoPage from './pages/ColecaoPage'
 
 import AnnouncementBar from './components/layout/AnnouncementBar'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import WhatsAppButton from './components/layout/WhatsAppButton'
+import CartDrawer from './components/cart/CartDrawer'
+import { CartProvider } from './context/CartContext'
 import { useAnalytics } from './hooks/useAnalytics'
 
 function StoreLayout({ children }: { children: React.ReactNode }) {
@@ -23,6 +26,7 @@ function StoreLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <CartDrawer />
     </div>
   )
 }
@@ -37,64 +41,74 @@ export default function App() {
   }, [pathname, trackEvent])
 
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
+    <CartProvider>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
 
-      <Route
-        path="/loja"
-        element={
-          <StoreLayout>
-            <HomePage />
-          </StoreLayout>
-        }
-      />
-      <Route
-        path="/loja/novidades"
-        element={
-          <StoreLayout>
-            <NovidadesPage />
-          </StoreLayout>
-        }
-      />
-      <Route
-        path="/loja/categoria/:slug"
-        element={
-          <StoreLayout>
-            <CategoryPage />
-          </StoreLayout>
-        }
-      />
-      <Route
-        path="/loja/produto/:slug"
-        element={
-          <StoreLayout>
-            <ProductPage />
-          </StoreLayout>
-        }
-      />
-      <Route
-        path="/loja-fisica"
-        element={
-          <StoreLayout>
-            <LojaFisicaPage />
-          </StoreLayout>
-        }
-      />
+        <Route
+          path="/loja"
+          element={
+            <StoreLayout>
+              <HomePage />
+            </StoreLayout>
+          }
+        />
+        <Route
+          path="/loja/colecao"
+          element={
+            <StoreLayout>
+              <ColecaoPage />
+            </StoreLayout>
+          }
+        />
+        <Route
+          path="/loja/novidades"
+          element={
+            <StoreLayout>
+              <NovidadesPage />
+            </StoreLayout>
+          }
+        />
+        <Route
+          path="/loja/categoria/:slug"
+          element={
+            <StoreLayout>
+              <CategoryPage />
+            </StoreLayout>
+          }
+        />
+        <Route
+          path="/loja/produto/:slug"
+          element={
+            <StoreLayout>
+              <ProductPage />
+            </StoreLayout>
+          }
+        />
+        <Route
+          path="/loja-fisica"
+          element={
+            <StoreLayout>
+              <LojaFisicaPage />
+            </StoreLayout>
+          }
+        />
 
-      {/* Atalhos de compatibilidade — quem chega via link antigo de produto/novidade cai direto na loja (sem passar pela landing) */}
-      <Route path="/produto/:slug" element={<Navigate to="/loja/produto/:slug" replace />} />
-      <Route path="/categoria/:slug" element={<Navigate to="/loja/categoria/:slug" replace />} />
-      <Route path="/novidades" element={<Navigate to="/loja/novidades" replace />} />
+        {/* Atalhos de compatibilidade — quem chega via link antigo de produto/novidade cai direto na loja (sem passar pela landing) */}
+        <Route path="/produto/:slug" element={<Navigate to="/loja/produto/:slug" replace />} />
+        <Route path="/categoria/:slug" element={<Navigate to="/loja/categoria/:slug" replace />} />
+        <Route path="/novidades" element={<Navigate to="/loja/novidades" replace />} />
 
-      <Route
-        path="*"
-        element={
-          <StoreLayout>
-            <NotFoundPage />
-          </StoreLayout>
-        }
-      />
-    </Routes>
+        <Route
+          path="*"
+          element={
+            <StoreLayout>
+              <NotFoundPage />
+            </StoreLayout>
+          }
+        />
+      </Routes>
+    </CartProvider>
   )
 }
 
