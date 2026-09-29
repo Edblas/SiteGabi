@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { siteConfig } from '../../config/siteConfig'
 
 const COLUMN_1 = [
   { label: 'Trocas e Devoluções', href: '/institucional/trocas' },
@@ -15,10 +16,9 @@ const COLUMN_2 = [
 export default function Footer() {
   const insta = import.meta.env.VITE_INSTAGRAM_URL || 'https://instagram.com/amorena.conceito'
   const whats = import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703'
-  const endereco =
-    import.meta.env.VITE_LOJA_ENDERECO ||
-    'Av. São José, 1261 · 1º andar'
-  const cidade = 'Alfenas · MG'
+  const endereco = siteConfig.store.address
+  const cidade = siteConfig.store.cityState
+  const horas = siteConfig.store.hours
 
   const whatsAppLink = `https://wa.me/${whats.replace(/\D/g, '')}`
 
@@ -31,11 +31,8 @@ export default function Footer() {
             Amorena veste você. Moda feminina que pensa no corpo, no tempo e no gesto.
           </p>
           <p className="mt-8 label-eyebrow">Atendimento</p>
-          <p className="mt-2 text-sm text-vinho/75">
-            {/* TODO: FASE 1 placeholder: horário exato a confirmar */}
-            Segunda a sexta · 10h às 19h
-            <br />
-            Sábados · 10h às 14h
+          <p className="mt-2 text-sm text-vinho/75 whitespace-pre-line">
+            {horas}
           </p>
         </div>
 

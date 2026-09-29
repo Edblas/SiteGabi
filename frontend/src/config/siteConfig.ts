@@ -95,7 +95,7 @@ export const siteConfig: SiteConfig = {
   store: {
     address: LOJA_ENDERECO,
     cityState: 'Alfenas · MG',
-    hours: 'Seg a sex · 10h às 19h  ·  Sáb · 10h às 14h',
+    hours: 'Seg a sex · 09h às 18h\nSáb · 09h às 17h',
   },
 
   seo: {
@@ -130,11 +130,6 @@ export const siteConfig: SiteConfig = {
  * Placeholders claramente marcados para serem resolvidos antes do deploy.
  */
 export const TODO_PENDING_DATA = [
-  {
-    id: 'store-hours',
-    place: 'siteConfig.store.hours',
-    note: 'Horário de funcionamento real (inclui feriados se necessário).',
-  },
   {
     id: 'hero-photo',
     place: 'LandingEntry → heroImage',

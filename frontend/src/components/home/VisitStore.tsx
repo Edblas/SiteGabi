@@ -1,6 +1,9 @@
+import { siteConfig } from '../../config/siteConfig'
+
 export default function VisitStore() {
-  const endereco = import.meta.env.VITE_LOJA_ENDERECO || 'Av. São José, 1261 · 1º andar'
-  const cidade = 'Alfenas · MG'
+  const endereco = siteConfig.store.address
+  const cidade = siteConfig.store.cityState
+  const horas = siteConfig.store.hours
   const whatsRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
   const whatsLink = `https://wa.me/${whatsRaw || '5535997061703'}?text=${encodeURIComponent(
     'Olá Gabi! Vim pelo site e gostaria de informações sobre a loja física da Amorena.',
@@ -26,11 +29,8 @@ export default function VisitStore() {
           <dl className="mt-10 grid grid-cols-2 gap-6 border-y border-bordo/15 py-6 max-w-md">
             <div>
               <dt className="label-eyebrow">Horário</dt>
-              <dd className="mt-2 font-serif text-lg leading-relaxed text-vinho/80">
-                {/* TODO: horário a confirmar */}
-                Seg a sex · 10h–19h
-                <br />
-                Sáb · 10h–14h
+              <dd className="mt-2 font-serif text-lg leading-relaxed text-vinho/80 whitespace-pre-line">
+                {horas}
               </dd>
             </div>
             <div>
