@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CATEGORIES, categoryHeroUrl } from '../data/seed'
 import useSEO from '../hooks/useSEO'
+import { siteConfig } from '../config/siteConfig'
 
 export default function ColecaoPage() {
   useSEO({
@@ -135,7 +136,7 @@ export default function ColecaoPage() {
               Visitar a loja física →
             </Link>
             <a
-              href="https://wa.me/5535997061703?text=Ol%C3%A1%20Gabi%21%20Vim%20pela%20cole%C3%A7%C3%A3o%20por%20setor%20e%20quero%20ajuda%20com%20um%20look."
+              href={siteConfig.links.whatsappColecao}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-bordo"

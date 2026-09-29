@@ -17,8 +17,8 @@ function buildDefaultMessage(): string {
 }
 
 export default function WhatsAppButton() {
-  const raw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
-  const number = raw || '5535997061703'
+  const raw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')
+  const number = raw || '5535997061783'
   const href = `https://wa.me/${number}?text=${buildDefaultMessage()}`
 
   return (

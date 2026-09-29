@@ -37,7 +37,7 @@ function buildCheckoutMessage(
 }
 
 const waLink = (msg: string) => {
-  const number = siteConfig.whatsappNumber || '5535997061703'
+  const number = siteConfig.whatsappNumber || '5535997061783'
   return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`
 }
 

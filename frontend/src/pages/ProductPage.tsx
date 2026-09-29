@@ -97,7 +97,7 @@ export default function ProductPage() {
     `Referência: ${product.id}\n` +
     `Link: ${typeof window !== 'undefined' ? window.location.href : ''}`,
   )
-  const whatsNum = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
+  const whatsNum = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')
   const whatsLink = `https://wa.me/${whatsNum}?text=${whatsMsg}`
 
   // Sugestões (produtos da mesma categoria, excluindo o atual)

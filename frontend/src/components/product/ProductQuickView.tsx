@@ -59,7 +59,7 @@ export default function ProductQuickView({ product, onClose }: Props) {
   const whatsText = encodeURIComponent(
     `Olá Gabi! Tenho interesse na peça ${product.name} (${currentColorName} ${size ?? 'tamanho?'}) — ${typeof window !== 'undefined' ? window.location.host : 'amorena'}.`,
   )
-  const whatsLink = `https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')}?text=${whatsText}`
+  const whatsLink = `https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')}?text=${whatsText}`
 
   return (
     <div

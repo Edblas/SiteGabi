@@ -1,6 +1,6 @@
 export default function VIPGroup() {
-  const whatsRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
-  const whatsLink = `https://wa.me/${whatsRaw || '5535997061703'}?text=${encodeURIComponent(
+  const whatsRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')
+  const whatsLink = `https://wa.me/${whatsRaw || '5535997061783'}?text=${encodeURIComponent(
     'Olá Gabi! Quero fazer parte do Grupo VIP Amorena e receber novidades em primeira mão.',
   )}`
 

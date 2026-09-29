@@ -15,7 +15,7 @@ const COLUMN_2 = [
 
 export default function Footer() {
   const insta = import.meta.env.VITE_INSTAGRAM_URL || 'https://instagram.com/amorena.conceito'
-  const whats = import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703'
+  const whats = import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783'
   const endereco = siteConfig.store.address
   const cidade = siteConfig.store.cityState
   const horas = siteConfig.store.hours

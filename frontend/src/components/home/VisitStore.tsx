@@ -4,8 +4,8 @@ export default function VisitStore() {
   const endereco = siteConfig.store.address
   const cidade = siteConfig.store.cityState
   const horas = siteConfig.store.hours
-  const whatsRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
-  const whatsLink = `https://wa.me/${whatsRaw || '5535997061703'}?text=${encodeURIComponent(
+  const whatsRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')
+  const whatsLink = `https://wa.me/${whatsRaw || '5535997061783'}?text=${encodeURIComponent(
     'Olá Gabi! Vim pelo site e gostaria de informações sobre a loja física da Amorena.',
   )}`
 

@@ -49,6 +49,7 @@ export interface SiteConfig {
     whatsapp: string
     vipGroup: string
     whatsappStoreContact: string
+    whatsappColecao: string
   }
 
   ctaLabels: {
@@ -62,7 +63,7 @@ export interface SiteConfig {
   }
 }
 
-const WHATSAPP_RAW = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061703').replace(/\D/g, '')
+const WHATSAPP_RAW = (import.meta.env.VITE_WHATSAPP_NUMBER || '5535997061783').replace(/\D/g, '')
 const INSTAGRAM_URL = import.meta.env.VITE_INSTAGRAM_URL || 'https://instagram.com/amorena.conceito'
 const LOJA_ENDERECO = import.meta.env.VITE_LOJA_ENDERECO || 'Av. São José, 1261 · 1º andar'
 
@@ -86,7 +87,7 @@ export const siteConfig: SiteConfig = {
     instagramUrl: INSTAGRAM_URL,
   },
 
-  whatsappNumber: WHATSAPP_RAW || '5535997061703',
+  whatsappNumber: WHATSAPP_RAW || '5535997061783',
   whatsappDefaultMessage: 'Olá Gabi! Vim pelo site da Amorena e gostaria de ajuda.',
 
   vipGroupUrl: 'https://chat.whatsapp.com/BmTxtSq0GQlKEJMHPvwp0h?mode=gi_t',
@@ -113,6 +114,7 @@ export const siteConfig: SiteConfig = {
     whatsapp: waLink('Olá Gabi! Vim pelo site da Amorena e gostaria de ajuda.'),
     vipGroup: waLink('Olá Gabi! Quero fazer parte do Grupo VIP Amorena e receber novidades em primeira mão.'),
     whatsappStoreContact: waLink('Olá Gabi! Vim pelo site e gostaria de informações sobre a loja física da Amorena.'),
+    whatsappColecao: waLink('Olá Gabi! Vim pela coleção por setor e quero ajuda com um look.'),
   },
 
   ctaLabels: {

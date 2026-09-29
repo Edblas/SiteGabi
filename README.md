@@ -78,7 +78,7 @@ Copie os valores abaixo e marque **Production + Preview + Development**:
 
 | Variável                  | Valor recomendado                      | Obrigatória p/ Fase 1 |
 | ------------------------- | -------------------------------------- | :-------------------: |
-| `VITE_WHATSAPP_NUMBER`    | `5535997061703`                        |           ✅           |
+| `VITE_WHATSAPP_NUMBER`    | `5535997061783`                        |           ✅           |
 | `VITE_INSTAGRAM_URL`      | `https://instagram.com/amorena.conceito` |         ✅           |
 | `VITE_LOJA_ENDERECO`      | `Av. São José, 1261 · 1º andar`        |           ✅           |
 | `VITE_API_BASE_URL`       | `https://api.amorena.com.br/api` (FASE 2) |       ❌ (Fase 2)    |
