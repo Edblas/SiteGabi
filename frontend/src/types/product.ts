@@ -11,6 +11,8 @@ export interface Category {
   name: string
   eyebrow: string
   lead: string
+  heroPrompt: string
+  heroSize: 'square_hd' | 'square' | 'portrait_4_3' | 'portrait_16_9' | 'landscape_4_3' | 'landscape_16_9'
 }
 
 export type Size = 'PP' | 'P' | 'M' | 'G' | 'GG' | 'Único' | '36' | '38' | '40' | '42'

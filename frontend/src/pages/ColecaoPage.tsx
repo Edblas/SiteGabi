@@ -1,44 +1,6 @@
 import { Link } from 'react-router-dom'
-import { CATEGORIES } from '../data/seed'
+import { CATEGORIES, categoryHeroUrl } from '../data/seed'
 import useSEO from '../hooks/useSEO'
-
-type ImgSize = 'square_hd' | 'square' | 'portrait_4_3' | 'portrait_16_9' | 'landscape_4_3' | 'landscape_16_9'
-
-const CATEGORY_IMG_PROMPT: Record<string, { editorial: string; size: ImgSize }> = {
-  vestidos: {
-    editorial:
-      'editorial fashion campaign brazilian woman wearing elegant burgundy midi silk dress in minimal cream studio natural soft shadows luxury magazine aesthetic calm pose',
-    size: 'landscape_16_9',
-  },
-  conjuntos: {
-    editorial:
-      'editorial fashion portrait of elegant brazilian woman wearing cream tailored two piece linen blazer and trouser set minimalist beige studio light, magazine aesthetic',
-    size: 'portrait_4_3',
-  },
-  blusas: {
-    editorial:
-      'editorial fashion close up portrait of elegant brazilian woman wearing white silk long sleeve blouse delicate gold jewelry minimal cream studio aesthetic',
-    size: 'landscape_16_9',
-  },
-  calcas: {
-    editorial:
-      'editorial fashion full body portrait of elegant brazilian woman wearing high waisted burgundy tailored trousers and white blouse in minimal cream studio aesthetic',
-    size: 'landscape_16_9',
-  },
-  saias: {
-    editorial:
-      'editorial fashion crop portrait of elegant brazilian woman wearing rose pleated midi skirt in neutral cream studio soft light, sensual calm pose',
-    size: 'portrait_4_3',
-  },
-  acessorios: {
-    editorial:
-      'editorial fashion flat lay of jewelry accessories - matte gold earrings, pearl necklace, woven belt, small leather crossbody bag - on textured cream paper, soft shadows',
-    size: 'portrait_4_3',
-  },
-}
-
-const img = (prompt: string, size: ImgSize) =>
-  `https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=${encodeURIComponent(prompt)}&image_size=${size}`
 
 export default function ColecaoPage() {
   useSEO({
@@ -77,10 +39,7 @@ export default function ColecaoPage() {
       <ol className="mt-12 grid grid-cols-12 gap-4 md:gap-6">
         {CATEGORIES.map((c, i) => {
           const even = i % 2 === 0
-          const imgCfg = CATEGORY_IMG_PROMPT[c.slug] || {
-            editorial: 'editorial fashion model wearing amorena clothing minimal cream studio',
-            size: 'landscape_16_9' as const,
-          }
+          const hero = categoryHeroUrl(c)
           return (
             <li
               key={c.slug}
@@ -105,8 +64,8 @@ export default function ColecaoPage() {
                   }
                 >
                   <img
-                    src={img(imgCfg.editorial, imgCfg.size)}
-                    alt={`Coleção ${c.name} — Amorena`}
+                    src={hero.url}
+                    alt={hero.alt}
                     loading={i <= 1 ? 'eager' : 'lazy'}
                     decoding="async"
                     className="h-full w-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.045]"

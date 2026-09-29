@@ -17,36 +17,48 @@ export const CATEGORIES: Category[] = [
     name: 'Vestidos',
     eyebrow: '01 · Coleção',
     lead: 'Peças que vestem o corpo e a memória.',
+    heroPrompt: 'editorial fashion campaign brazilian woman wearing elegant burgundy midi silk dress in minimal cream studio natural soft shadows luxury magazine aesthetic calm pose',
+    heroSize: 'landscape_16_9',
   },
   {
     slug: 'conjuntos',
     name: 'Conjuntos',
     eyebrow: '02 · Coleção',
     lead: 'O conforto do conjunto, a elegância da peça única.',
+    heroPrompt: 'editorial fashion portrait of elegant brazilian woman wearing cream tailored two piece linen blazer and trouser set minimalist beige studio light, magazine aesthetic',
+    heroSize: 'portrait_4_3',
   },
   {
     slug: 'blusas',
     name: 'Blusas',
     eyebrow: '03 · Coleção',
     lead: 'Para todas as horas, para todos os dias.',
+    heroPrompt: 'editorial fashion close up portrait of elegant brazilian woman wearing white silk long sleeve blouse delicate gold jewelry minimal cream studio aesthetic',
+    heroSize: 'landscape_16_9',
   },
   {
     slug: 'calcas',
     name: 'Calças',
     eyebrow: '04 · Coleção',
     lead: 'Cortes precisos. Modelagem impecável.',
+    heroPrompt: 'editorial fashion full body portrait of elegant brazilian woman wearing high waisted burgundy tailored trousers and white blouse in minimal cream studio aesthetic',
+    heroSize: 'landscape_16_9',
   },
   {
     slug: 'saias',
     name: 'Saias',
     eyebrow: '05 · Coleção',
     lead: 'Um gesto leve em cada movimento.',
+    heroPrompt: 'editorial fashion crop portrait of elegant brazilian woman wearing rose pleated midi skirt in neutral cream studio soft light, sensual calm pose',
+    heroSize: 'portrait_4_3',
   },
   {
     slug: 'acessorios',
     name: 'Acessórios',
     eyebrow: '06 · Coleção',
     lead: 'O detalhe que transforma o olhar.',
+    heroPrompt: 'editorial fashion flat lay of jewelry accessories - matte gold earrings, pearl necklace, woven belt, small leather crossbody bag - on textured cream paper, soft shadows',
+    heroSize: 'portrait_4_3',
   },
 ]
 
@@ -409,6 +421,13 @@ export const formatCurrency = (cents: number): string =>
   })
 
 export const CASH_DISCOUNT_PCT = 10
+
+export function categoryHeroUrl(category: Category): { url: string; alt: string } {
+  const url = `https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=${encodeURIComponent(
+    category.heroPrompt,
+  )}&image_size=${category.heroSize}`
+  return { url, alt: `Editorial — ${category.name}` }
+}
 
 export function getCashPriceInCents(valueInCents: number): number {
   return Math.round(valueInCents * (1 - CASH_DISCOUNT_PCT / 100))

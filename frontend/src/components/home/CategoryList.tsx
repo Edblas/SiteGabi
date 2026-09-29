@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { CATEGORIES } from '../../data/seed'
+import { CATEGORIES, categoryHeroUrl } from '../../data/seed'
+import type { Category } from '../../types/product'
 
 export default function CategoryList() {
   return (
@@ -12,44 +13,76 @@ export default function CategoryList() {
           </h2>
         </div>
         <p className="hidden max-w-sm font-serif italic text-lg leading-relaxed text-vinho/70 md:block">
-          Sete recortes da mesma coleção. Cada peça pensada para um momento diferente da sua rotina.
+          Seis recortes da mesma coleção. Cada peça pensada para um momento diferente da sua rotina.
         </p>
       </div>
 
-      <ol className="divide-y divide-bordo/15">
-        {CATEGORIES.map((c, i) => {
-          const even = i % 2 === 0
-          return (
-            <li key={c.slug}>
-              <Link
-                to={`/categoria/${c.slug}`}
-                className="group grid grid-cols-12 items-baseline gap-4 py-8 transition-colors hover:bg-creme-deep/60 md:py-10"
-              >
-                <span className="col-span-2 md:col-span-1 font-serif italic text-xl text-bordo/60 md:text-2xl">
-                  0{i + 1}
-                </span>
-
-                <span
-                  className={`col-span-10 md:col-span-5 font-serif tracking-tight leading-none transition-transform duration-300 group-hover:translate-x-2 group-hover:text-bordo ${even ? 'text-[clamp(2.5rem,9vw,6rem)]' : 'text-[clamp(2rem,7vw,4.5rem)] italic text-bordo/90'}`}
-                >
-                  {c.name}
-                </span>
-
-                <span className="col-span-8 md:col-span-4 hidden font-serif italic text-vinho/70 md:block md:text-lg">
-                  {c.lead}
-                </span>
-
-                <span className="col-span-4 ml-auto text-right md:col-span-2">
-                  <span className="inline-flex items-center gap-3 text-[11px] uppercase tracking-editorial text-bordo/80 group-hover:text-bordo">
-                    Comprar
-                    <span className="inline-block h-px w-8 bg-bordo/60 transition-all group-hover:w-12" aria-hidden />
-                  </span>
-                </span>
-              </Link>
-            </li>
-          )
-        })}
+      <ol className="mt-12 grid grid-cols-12 gap-4 md:gap-6">
+        {CATEGORIES.map((c, i) => (
+          <CategoryTile key={c.slug} category={c} index={i} />
+        ))}
       </ol>
     </section>
+  )
+}
+
+function CategoryTile({ category, index }: { category: Category; index: number }) {
+  const even = index % 2 === 0
+  const hero = categoryHeroUrl(category)
+  const aspect = category.heroSize.startsWith('landscape')
+    ? 'aspect-[16/10]'
+    : category.heroSize === 'portrait_4_3'
+      ? 'aspect-[4/5]'
+      : category.heroSize === 'portrait_16_9'
+        ? 'aspect-[9/16]'
+        : 'aspect-square'
+
+  return (
+    <li
+      className={`${even ? 'col-span-12 lg:col-span-8' : 'col-span-12 lg:col-span-4'} ${even ? '' : 'lg:self-end'}`}
+    >
+      <Link
+        to={`/loja/categoria/${category.slug}`}
+        aria-label={`Entrar em ${category.name}`}
+        className="group relative block overflow-hidden border border-bordo/10 bg-creme-deep"
+      >
+        <div className={`relative w-full overflow-hidden ${aspect}`}>
+          <img
+            src={hero.url}
+            alt={hero.alt}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-vinho/75 via-vinho/20 to-transparent"
+          />
+        </div>
+
+        <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8 text-creme">
+          <div className="flex items-start justify-between gap-4">
+            <span className="font-serif italic text-2xl text-creme/80 md:text-3xl">
+              0{index + 1}
+            </span>
+          </div>
+
+          <div>
+            <h3
+              className={`font-serif leading-[0.95] tracking-tight ${even ? 'text-5xl md:text-7xl' : 'text-4xl md:text-5xl'} ${even ? '' : 'italic text-creme/90'}`}
+            >
+              {category.name}
+            </h3>
+            <p className="mt-3 max-w-md font-serif italic text-base leading-relaxed text-creme/80 md:text-lg">
+              {category.lead}
+            </p>
+            <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-creme/85 group-hover:text-creme">
+              Entrar
+              <span className="inline-block h-px w-10 bg-creme/70 transition-all duration-500 group-hover:w-16 group-hover:bg-creme" aria-hidden />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </li>
   )
 }
