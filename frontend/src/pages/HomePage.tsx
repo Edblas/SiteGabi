@@ -25,8 +25,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <BenefitsStrip />
       <CategoryList />
+      <BenefitsStrip />
 
       <ProductShowcase
         eyebrow="03 · Novidades"
