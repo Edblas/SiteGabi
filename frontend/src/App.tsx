@@ -9,6 +9,9 @@ import NovidadesPage from './pages/NovidadesPage'
 import LojaFisicaPage from './pages/LojaFisicaPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ColecaoPage from './pages/ColecaoPage'
+import AdminLoginPage from './pages/AdminLoginPage'
+import AdminDashboardPage from './pages/AdminDashboardPage'
+import ProtectedRoute from './components/admin/ProtectedRoute'
 
 import AnnouncementBar from './components/layout/AnnouncementBar'
 import Navbar from './components/layout/Navbar'
@@ -45,6 +48,15 @@ export default function App() {
   return (
     <CartProvider>
       <Routes>
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<LandingPage />} />
 
         <Route

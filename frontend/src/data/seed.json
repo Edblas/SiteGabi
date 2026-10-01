@@ -1,0 +1,374 @@
+{
+  "$schema": "./seed.schema.json",
+  "colors": [
+    { "id": "bordo", "name": "Bordô Atemporal", "label": "Bordô", "hex": "#6B1F29" },
+    { "id": "nude", "name": "Nude Areia", "label": "Nude", "hex": "#D8B8A8" },
+    { "id": "creme", "name": "Creme Merengue", "label": "Creme", "hex": "#F2E7D8" },
+    { "id": "terracota", "name": "Terracota Queimado", "label": "Terracota", "hex": "#B66A56" },
+    { "id": "preto", "name": "Preto Índigo", "label": "Preto", "hex": "#1B1618" },
+    { "id": "verde", "name": "Verde Oliva", "label": "Oliva", "hex": "#5F6146" },
+    { "id": "camelo", "name": "Camelo Claro", "label": "Camelo", "hex": "#BFA180" },
+    { "id": "rose", "name": "Rosé Pálido", "label": "Rosé", "hex": "#E3C2BB" }
+  ],
+  "categories": [
+    {
+      "slug": "vestidos",
+      "name": "Vestidos",
+      "eyebrow": "01 · Coleção",
+      "lead": "Peças que vestem o corpo e a memória.",
+      "heroPrompt": "editorial fashion campaign brazilian woman wearing elegant burgundy midi silk dress in minimal cream studio natural soft shadows luxury magazine aesthetic calm pose",
+      "heroSize": "landscape_16_9"
+    },
+    {
+      "slug": "conjuntos",
+      "name": "Conjuntos",
+      "eyebrow": "02 · Coleção",
+      "lead": "O conforto do conjunto, a elegância da peça única.",
+      "heroPrompt": "editorial fashion portrait of elegant brazilian woman wearing cream tailored two piece linen blazer and trouser set minimalist beige studio light, magazine aesthetic",
+      "heroSize": "portrait_4_3"
+    },
+    {
+      "slug": "blusas",
+      "name": "Blusas",
+      "eyebrow": "03 · Coleção",
+      "lead": "Para todas as horas, para todos os dias.",
+      "heroPrompt": "editorial fashion close up portrait of elegant brazilian woman wearing white silk long sleeve blouse delicate gold jewelry minimal cream studio aesthetic",
+      "heroSize": "landscape_16_9"
+    },
+    {
+      "slug": "calcas",
+      "name": "Calças",
+      "eyebrow": "04 · Coleção",
+      "lead": "Cortes precisos. Modelagem impecável.",
+      "heroPrompt": "editorial fashion full body portrait of elegant brazilian woman wearing high waisted burgundy tailored trousers and white blouse in minimal cream studio aesthetic",
+      "heroSize": "landscape_16_9"
+    },
+    {
+      "slug": "saias",
+      "name": "Saias",
+      "eyebrow": "05 · Coleção",
+      "lead": "Um gesto leve em cada movimento.",
+      "heroPrompt": "editorial fashion crop portrait of elegant brazilian woman wearing rose pleated midi skirt in neutral cream studio soft light, sensual calm pose",
+      "heroSize": "portrait_4_3"
+    },
+    {
+      "slug": "acessorios",
+      "name": "Acessórios",
+      "eyebrow": "06 · Coleção",
+      "lead": "O detalhe que transforma o olhar.",
+      "heroPrompt": "editorial fashion flat lay of jewelry accessories - matte gold earrings, pearl necklace, woven belt, small leather crossbody bag - on textured cream paper, soft shadows",
+      "heroSize": "portrait_4_3"
+    }
+  ],
+  "products": [
+    {
+      "id": "p-001",
+      "slug": "vestido-midi-alfaiataria-bordo",
+      "name": "Vestido Midi Alfaiataria",
+      "subtitle": "Bordô Atemporal",
+      "shortDescription": "Midi envelope em tecido frio, com manga longa e fenda discreta.",
+      "longDescription": "Vestido midi de alfaiataria com modelagem envelope, lapela profunda e cinto removível na cintura. Manga longa com punho ajustado. Fenda discreta na barra, ideal para compor do escritório ao jantar.",
+      "category": "vestidos",
+      "composition": "72% poliéster · 24% viscose · 4% elastano. Forro 100% viscose.",
+      "care": "Lavagem à mão em água fria. Não alvejar. Não secar em tambor. Passar a ferro temperatura média.",
+      "priceInCents": 42800,
+      "promotionalPriceInCents": 38500,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20burgundy%20tailored%20midi%20wrap%20dress%20with%20long%20sleeves%20belt%20at%20waist%20soft%20editorial%20pose%20full%20body&image_size=portrait_4_3", "alt": "Vestido Midi Alfaiataria — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20burgundy%20wool%20blend%20tailored%20dress%20fabric%20seam%20stitching%20detail%20lapel%20collar&image_size=square_hd", "alt": "Vestido Midi Alfaiataria — detalhe" }
+      ],
+      "colorIds": ["bordo", "nude"],
+      "availableSizes": ["PP", "P", "M", "G", "GG"],
+      "variations": [
+        { "sku": "AMO-001-BD-PP", "colorId": "bordo", "size": "PP", "stock": 4 },
+        { "sku": "AMO-001-BD-P", "colorId": "bordo", "size": "P", "stock": 7 },
+        { "sku": "AMO-001-BD-M", "colorId": "bordo", "size": "M", "stock": 2 },
+        { "sku": "AMO-001-BD-G", "colorId": "bordo", "size": "G", "stock": 5 },
+        { "sku": "AMO-001-ND-M", "colorId": "nude", "size": "M", "stock": 3 },
+        { "sku": "AMO-001-ND-G", "colorId": "nude", "size": "G", "stock": 6 }
+      ],
+      "isNew": true,
+      "isBestSeller": true,
+      "tags": ["alfaiataria", "midi", "bordo-atemporal"]
+    },
+    {
+      "id": "p-002",
+      "slug": "vestido-longo-crepe-nude",
+      "name": "Vestido Longo Crepe",
+      "subtitle": "Nude Areia",
+      "shortDescription": "Longo fluido com alças finas e decote reto.",
+      "longDescription": "Vestido longo em crepe de seda com caimento leve. Alças finas ajustáveis, decote reto e saia fluidamente solta. Peça para ocasiões que pedem presença sem esforço.",
+      "category": "vestidos",
+      "composition": "100% poliéster crepe. Forro 100% viscose.",
+      "care": "Lavagem a seco recomendada. Não usar alvejante.",
+      "priceInCents": 56800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20nude%20sand%20floor%20length%20fluid%20crepe%20dress%20thin%20straps%20straight%20neckline%20studio%20editorial&image_size=portrait_4_3", "alt": "Vestido Longo Crepe — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20nude%20sand%20crepe%20fabric%20flowing%20dress%20skirt%20drape%20detail%20close%20up%20stitching&image_size=square_hd", "alt": "Vestido Longo Crepe — caimento" }
+      ],
+      "colorIds": ["nude", "rose"],
+      "availableSizes": ["PP", "P", "M", "G"],
+      "variations": [
+        { "sku": "AMO-002-ND-PP", "colorId": "nude", "size": "PP", "stock": 2 },
+        { "sku": "AMO-002-ND-P", "colorId": "nude", "size": "P", "stock": 5 },
+        { "sku": "AMO-002-ND-M", "colorId": "nude", "size": "M", "stock": 3 },
+        { "sku": "AMO-002-RS-G", "colorId": "rose", "size": "G", "stock": 1 }
+      ],
+      "isNew": true,
+      "tags": ["longo", "noivas", "madrinhas"]
+    },
+    {
+      "id": "p-003",
+      "slug": "vestido-curto-linho-creme",
+      "name": "Vestido Curto Linho",
+      "subtitle": "Creme Merengue",
+      "shortDescription": "Curto envelope em linho, amarração nas costas.",
+      "longDescription": "Vestido curto em linho puro com modelagem transpassada. Amarração ajustável nas costas, mangas bufantes curtas e barra acima do joelho. O favorito dos fins de semana.",
+      "category": "vestidos",
+      "composition": "100% linho brasileiro. Forro 100% algodão.",
+      "care": "Lavagem à mão. Secar à sombra. Passar a ferro ainda úmido.",
+      "priceInCents": 29800,
+      "promotionalPriceInCents": 25800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20off%20white%20cream%20linen%20short%20wrap%20dress%20puffed%20short%20sleeves%20tie%20at%20back%20studio%20editorial%20full%20body&image_size=portrait_4_3", "alt": "Vestido Curto Linho — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20cream%20linen%20fabric%20texture%20weave%20detail%20close%20up%20natural%20fiber&image_size=square_hd", "alt": "Vestido Curto Linho — tecido" }
+      ],
+      "colorIds": ["creme", "verde"],
+      "availableSizes": ["P", "M", "G"],
+      "variations": [
+        { "sku": "AMO-003-CR-P", "colorId": "creme", "size": "P", "stock": 6 },
+        { "sku": "AMO-003-CR-M", "colorId": "creme", "size": "M", "stock": 4 },
+        { "sku": "AMO-003-VO-G", "colorId": "verde", "size": "G", "stock": 2 }
+      ],
+      "isBestSeller": true,
+      "tags": ["linho", "verano", "cottage"]
+    },
+    {
+      "id": "p-004",
+      "slug": "conjunto-alfaiataria-terracota",
+      "name": "Conjunto Alfaiataria",
+      "subtitle": "Terracota Queimado",
+      "shortDescription": "Blazer oversize + calça de pinça em tecido frio.",
+      "longDescription": "Conjunto de alfaiataria em tecido frio com stretch leve. Blazer com ombreiras estruturadas e lapela. Calça de cintura alta, pinças frontais e boca reta. Vende também como peças avulsas.",
+      "category": "conjuntos",
+      "composition": "68% poliéster · 30% viscose · 2% elastano.",
+      "care": "Lavagem a seco. Passar a ferro temperatura média.",
+      "priceInCents": 68900,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20burnt%20terracota%20tailored%20oversized%20blazer%20straight%20leg%20trouser%20suit%20set%20studio%20editorial&image_size=portrait_4_3", "alt": "Conjunto Alfaiataria — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20terracota%20tailored%20blazer%20lapel%20button%20stitching%20detail&image_size=square_hd", "alt": "Conjunto Alfaiataria — lapela" }
+      ],
+      "colorIds": ["terracota", "preto"],
+      "availableSizes": ["36", "38", "40", "42"],
+      "variations": [
+        { "sku": "AMO-004-TT-36", "colorId": "terracota", "size": "36", "stock": 3 },
+        { "sku": "AMO-004-TT-38", "colorId": "terracota", "size": "38", "stock": 5 },
+        { "sku": "AMO-004-TT-40", "colorId": "terracota", "size": "40", "stock": 2 },
+        { "sku": "AMO-004-PT-42", "colorId": "preto", "size": "42", "stock": 1 }
+      ],
+      "isBestSeller": true,
+      "tags": ["workwear", "alfaiataria"]
+    },
+    {
+      "id": "p-005",
+      "slug": "conjunto-tricot-camelo",
+      "name": "Conjunto Tricot Fio",
+      "subtitle": "Camelo Claro",
+      "shortDescription": "Cardigan longo + calça pantalona em malha fria.",
+      "longDescription": "Conjunto de tricot em malha fria com toque macio. Cardigan longo, sem botões, com bolsos frontais. Calça pantalona de cós elástico. Perfeito para o entre-tempo.",
+      "category": "conjuntos",
+      "composition": "60% viscose · 40% poliamida.",
+      "care": "Lavagem à mão em água fria. Secar na horizontal. Não usar secadora.",
+      "priceInCents": 51200,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20camel%20beige%20knit%20long%20cardigan%20wide%20leg%20pants%20set%20studio%20soft%20editorial&image_size=portrait_4_3", "alt": "Conjunto Tricot Fio — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20camel%20knit%20stitch%20texture%20rib%20close%20up%20detail&image_size=square_hd", "alt": "Conjunto Tricot Fio — textura" }
+      ],
+      "colorIds": ["camelo", "rose"],
+      "availableSizes": ["P", "M", "G", "GG"],
+      "variations": [
+        { "sku": "AMO-005-CM-P", "colorId": "camelo", "size": "P", "stock": 4 },
+        { "sku": "AMO-005-CM-M", "colorId": "camelo", "size": "M", "stock": 3 },
+        { "sku": "AMO-005-RS-G", "colorId": "rose", "size": "G", "stock": 2 }
+      ],
+      "tags": ["conforto", "tricô"]
+    },
+    {
+      "id": "p-006",
+      "slug": "blusa-seda-crepe-bordo",
+      "name": "Blusa Seda Crepe",
+      "subtitle": "Bordô Atemporal",
+      "shortDescription": "Decote V profundo, mangas longas, amarração no cós.",
+      "longDescription": "Blusa em crepe de seda com amarração frontal. Decote V profundo, mangas longas amplas e punho ajustado. Combina com calça de alfaiataria, jeans de cintura alta ou saia midi.",
+      "category": "blusas",
+      "composition": "92% poliéster · 08% elastano.",
+      "care": "Lavagem à mão. Não torcer. Passar a ferro do avesso.",
+      "priceInCents": 22800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20burgundy%20deep%20V%20neck%20silk%20crepe%20blouse%20long%20sleeves%20tie%20at%20waist%20studio%20editorial&image_size=portrait_4_3", "alt": "Blusa Seda Crepe — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20burgundy%20silk%20crepe%20fabric%20blouse%20neckline%20tie%20detail%20stitching&image_size=square_hd", "alt": "Blusa Seda Crepe — amarração" }
+      ],
+      "colorIds": ["bordo", "preto", "creme"],
+      "availableSizes": ["PP", "P", "M", "G"],
+      "variations": [
+        { "sku": "AMO-006-BD-PP", "colorId": "bordo", "size": "PP", "stock": 5 },
+        { "sku": "AMO-006-BD-P", "colorId": "bordo", "size": "P", "stock": 7 },
+        { "sku": "AMO-006-BD-M", "colorId": "bordo", "size": "M", "stock": 4 },
+        { "sku": "AMO-006-PT-G", "colorId": "preto", "size": "G", "stock": 3 },
+        { "sku": "AMO-006-CR-P", "colorId": "creme", "size": "P", "stock": 2 }
+      ],
+      "isNew": true,
+      "tags": ["sedoso", "noite"]
+    },
+    {
+      "id": "p-007",
+      "slug": "blusa-linho-bordado-rose",
+      "name": "Blusa Linho Bordado",
+      "subtitle": "Rosé Pálido",
+      "shortDescription": "Manga curta bufante, gola alta, bordado a mão.",
+      "longDescription": "Blusa em linho com gola alta descontraída e manga curta bufante. Detalhe de bordado manual na barra e nos punhos. Trabalhada pelas nossas artesãs em Peça Única.",
+      "category": "blusas",
+      "composition": "100% linho. Bordado manual em fio de algodão.",
+      "care": "Lavagem à mão em água fria. Não centrifugar. Secar à sombra.",
+      "priceInCents": 27600,
+      "promotionalPriceInCents": 23800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20pale%20rose%20pink%20linen%20blouse%20puff%20short%20sleeves%20mock%20neck%20hand%20embroidery%20details%20studio&image_size=portrait_4_3", "alt": "Blusa Linho Bordado — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20hand%20embroidery%20detail%20floral%20stitches%20on%20pale%20rose%20linen%20close%20up&image_size=square_hd", "alt": "Blusa Linho Bordado — detalhe" }
+      ],
+      "colorIds": ["rose", "creme"],
+      "availableSizes": ["P", "M", "G"],
+      "variations": [
+        { "sku": "AMO-007-RS-P", "colorId": "rose", "size": "P", "stock": 2 },
+        { "sku": "AMO-007-RS-M", "colorId": "rose", "size": "M", "stock": 1 },
+        { "sku": "AMO-007-CR-G", "colorId": "creme", "size": "G", "stock": 3 }
+      ],
+      "isNew": true,
+      "tags": ["peca-unica", "artesanal"]
+    },
+    {
+      "id": "p-008",
+      "slug": "calca-pantalona-alfaiataria-preto",
+      "name": "Calça Pantalona Alfaiataria",
+      "subtitle": "Preto Índigo",
+      "shortDescription": "Cintura alta, boca larga, tecido frio com stretch.",
+      "longDescription": "Calça pantalona de alfaiataria em tecido frio com leve stretch. Cintura alta com pinças frontais, zíper invisível lateral e barra larga. Comprida para usar com salto ou com bainha curta.",
+      "category": "calcas",
+      "composition": "70% poliéster · 28% viscose · 02% elastano.",
+      "care": "Lavagem à mão ou a seco. Passar a ferro ainda levemente úmida.",
+      "priceInCents": 34800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20black%20high%20waisted%20wide%20leg%20tailored%20trouser%20pants%20studio%20editorial%20full%20body&image_size=portrait_4_3", "alt": "Calça Pantalona Alfaiataria — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20black%20tailored%20pants%20waist%20pleats%20stitch%20detail%20close%20up&image_size=square_hd", "alt": "Calça Pantalona Alfaiataria — pinças" }
+      ],
+      "colorIds": ["preto", "bordo", "camelo"],
+      "availableSizes": ["36", "38", "40", "42"],
+      "variations": [
+        { "sku": "AMO-008-PT-36", "colorId": "preto", "size": "36", "stock": 5 },
+        { "sku": "AMO-008-PT-38", "colorId": "preto", "size": "38", "stock": 7 },
+        { "sku": "AMO-008-PT-40", "colorId": "preto", "size": "40", "stock": 4 },
+        { "sku": "AMO-008-BD-42", "colorId": "bordo", "size": "42", "stock": 2 },
+        { "sku": "AMO-008-CM-38", "colorId": "camelo", "size": "38", "stock": 3 }
+      ],
+      "isBestSeller": true,
+      "tags": ["workwear", "coringa"]
+    },
+    {
+      "id": "p-009",
+      "slug": "calca-reta-jeans-nude",
+      "name": "Calça Reta Jeans",
+      "subtitle": "Nude Areia",
+      "shortDescription": "Reta de cintura média, lavagem clara, sem elastano.",
+      "longDescription": "Calça jeans reta em lavagem clara nude, modelagem vintage. Cintura média, cinco bolsos e fechamento por botão. Sem elastano, modela com o uso.",
+      "category": "calcas",
+      "composition": "98% algodão · 02% elastano.",
+      "care": "Lavar do avesso. Não misturar com peças claras nas primeiras lavagens.",
+      "priceInCents": 28900,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20nude%20sand%20straight%20leg%20mid%20rise%20denim%20jeans%20studio%20editorial%20full%20body&image_size=portrait_4_3", "alt": "Calça Reta Jeans — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20nude%20denim%20fabric%20weave%20seam%20stitching%20detail%20close%20up&image_size=square_hd", "alt": "Calça Reta Jeans — detalhe" }
+      ],
+      "colorIds": ["nude", "preto"],
+      "availableSizes": ["36", "38", "40", "42"],
+      "variations": [
+        { "sku": "AMO-009-ND-36", "colorId": "nude", "size": "36", "stock": 3 },
+        { "sku": "AMO-009-ND-38", "colorId": "nude", "size": "38", "stock": 6 },
+        { "sku": "AMO-009-ND-40", "colorId": "nude", "size": "40", "stock": 2 },
+        { "sku": "AMO-009-PT-42", "colorId": "preto", "size": "42", "stock": 1 }
+      ],
+      "tags": ["denim", "basico"]
+    },
+    {
+      "id": "p-010",
+      "slug": "saia-midi-plissada-creme",
+      "name": "Saia Midi Plissada",
+      "subtitle": "Creme Merengue",
+      "shortDescription": "Saia midi plissada de cós alto com fenda assimétrica.",
+      "longDescription": "Saia midi plissada em tecido fluido de caimento impecável. Cós alto estruturado, zíper invisível no costado e fenda assimétrica na barra. A peça das estações.",
+      "category": "saias",
+      "composition": "100% poliéster. Forro 100% viscose.",
+      "care": "Lavagem à mão em água fria. Não passar plissado a ferro.",
+      "priceInCents": 26800,
+      "promotionalPriceInCents": 23800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20elegant%20brazilian%20model%20wearing%20off%20white%20cream%20pleated%20midi%20skirt%20high%20waist%20asymmetric%20slit%20studio%20editorial%20full%20body&image_size=portrait_4_3", "alt": "Saia Midi Plissada — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20cream%20pleated%20skirt%20fabric%20pleats%20close%20up%20detail%20hem&image_size=square_hd", "alt": "Saia Midi Plissada — plissado" }
+      ],
+      "colorIds": ["creme", "bordo"],
+      "availableSizes": ["36", "38", "40", "42"],
+      "variations": [
+        { "sku": "AMO-010-CR-36", "colorId": "creme", "size": "36", "stock": 4 },
+        { "sku": "AMO-010-CR-38", "colorId": "creme", "size": "38", "stock": 5 },
+        { "sku": "AMO-010-BD-40", "colorId": "bordo", "size": "40", "stock": 2 }
+      ],
+      "isBestSeller": true,
+      "tags": ["plissado", "romantico"]
+    },
+    {
+      "id": "p-011",
+      "slug": "cinto-couro-metal-bordo",
+      "name": "Cinto Couro Metal",
+      "subtitle": "Bordô Atemporal",
+      "shortDescription": "Cinto de couro legítimo com fivela em metal escovado.",
+      "longDescription": "Cinto em couro legítimo com 3 cm de largura. Fivela em latão escovado. Modelagem justa à cintura. Feito no Brasil.",
+      "category": "acessorios",
+      "composition": "100% couro bovino. Fivela em metal latão escovado.",
+      "care": "Limpar com pano seco. Não expor ao sol. Não usar produtos químicos.",
+      "priceInCents": 17900,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20editorial%20product%20flat%20lay%20of%20burgundy%20leather%20belt%20brushed%20brass%20buckle%20off%20white%20paper%20background%20soft%20shadow&image_size=portrait_4_3", "alt": "Cinto Couro Metal — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20detail%20editorial%20fashion%20photography%20of%20fabric%20texture%20stitching%20hem%20studio%20lighting%20off-white%20background%20burgundy%20leather%20belt%20brass%20buckle%20texture%20grain%20close%20up&image_size=square_hd", "alt": "Cinto Couro Metal — fivela" }
+      ],
+      "colorIds": ["bordo", "preto", "camelo"],
+      "availableSizes": ["P", "M", "G"],
+      "variations": [
+        { "sku": "AMO-011-BD-P", "colorId": "bordo", "size": "P", "stock": 6 },
+        { "sku": "AMO-011-BD-M", "colorId": "bordo", "size": "M", "stock": 8 },
+        { "sku": "AMO-011-BD-G", "colorId": "bordo", "size": "G", "stock": 4 },
+        { "sku": "AMO-011-PT-M", "colorId": "preto", "size": "M", "stock": 5 }
+      ],
+      "tags": ["couro", "acessorio"]
+    },
+    {
+      "id": "p-012",
+      "slug": "brinco-perola-gota",
+      "name": "Brinco Pérola Gota",
+      "subtitle": "Acessórios · Últimas unidades",
+      "shortDescription": "Par de brincos em metal dourado fosco e pérola gota.",
+      "longDescription": "Par de brincos em banho dourado fosco antialérgico. Pérola gota de 14 mm. Fechamento por pressão. Peça atemporal.",
+      "category": "acessorios",
+      "composition": "Metal com banho dourado. Pérola de vidro. Peças antialérgicas.",
+      "care": "Guardar em local arejado. Evitar contato com perfumes e cosméticos.",
+      "priceInCents": 11800,
+      "promotionalPriceInCents": 8800,
+      "images": [
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20photography%20studio%20lighting%20soft%20shadow%20plain%20off-white%20seamless%20background%20editorial%20product%20flat%20lay%20of%20matte%20gold%20drop%20pearl%20earrings%20pair%20off%20white%20paper%20background%20soft%20shadow%20minimal&image_size=portrait_4_3", "alt": "Brinco Pérola Gota — frente" },
+        { "url": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20product%20macro%20close%20up%20of%20matte%20gold%20earring%20hook%20and%20pearl%20drop%20on%20off%20white%20paper&image_size=portrait_4_3", "alt": "Brinco Pérola Gota — detalhe" }
+      ],
+      "colorIds": ["preto", "creme"],
+      "availableSizes": ["Único"],
+      "variations": [{ "sku": "AMO-012-PE-UN", "colorId": "creme", "size": "Único", "stock": 3 }],
+      "tags": ["ultimas-unidades"]
+    }
+  ]
+}

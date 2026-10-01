@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@vercel/node": "^17.0.0"
+  },
+  "dependencies": {
+    "@octokit/core": "^7.0.8",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

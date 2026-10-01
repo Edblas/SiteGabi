@@ -7,9 +7,14 @@
   "devCommand": "npm run dev --prefix frontend",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "rewrites": [
     {
-      "source": "/((?!assets/|favicon\\.ico|og-image\\.|hero-landing).*)",
+      "source": "/((?!api/|assets/|favicon\\.ico|og-image\\.|hero-landing).*)",
       "destination": "/index.html"
     }
   ]

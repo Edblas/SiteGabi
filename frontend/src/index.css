@@ -87,6 +87,11 @@
     @apply inline-flex items-center gap-2 rounded-none px-3 py-1.5 border border-bordo/20 text-[11px] uppercase tracking-wideish text-bordo;
   }
 
+  .input-admin {
+    @apply w-full rounded-none border border-bordo/20 bg-white px-3 py-2 text-sm text-vinho outline-none
+           focus:border-bordo/70 transition-colors duration-150;
+  }
+
   .link-underline {
     @apply relative inline-block;
   }
