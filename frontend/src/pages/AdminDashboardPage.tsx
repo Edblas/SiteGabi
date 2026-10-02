@@ -1,10 +1,10 @@
 import { useMemo, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { COLORS, PRODUCTS, CATEGORIES, formatCurrency } from '../data/seed'
-import type { Category, Product } from '../types/product'
+import type { Category, ColorSwatch, Product } from '../types/product'
 import { clearAdminToken, getAdminToken } from '../components/admin/ProtectedRoute'
 
-type Tab = 'produtos' | 'categorias'
+type Tab = 'produtos' | 'categorias' | 'cores'
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate()
@@ -12,11 +12,41 @@ export default function AdminDashboardPage() {
 
   const [products, setProducts] = useState<Product[]>(() => JSON.parse(JSON.stringify(PRODUCTS)))
   const [categories, setCategories] = useState<Category[]>(() => JSON.parse(JSON.stringify(CATEGORIES)))
+  const [colors, setColors] = useState<ColorSwatch[]>(() => JSON.parse(JSON.stringify(COLORS)))
 
   const [saving, setSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<{ ok: boolean; msg: string; commitUrl?: string } | null>(null)
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [uploading, setUploading] = useState<string | null>(null)
+
+  async function salvarCores() {
+    setSaving(true)
+    setLastSaved(null)
+    try {
+      const res = await fetch('/api/admin/categories', {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          colors,
+          message: `feat(admin): atualizar cores via painel (${new Date().toISOString().slice(0, 16).replace('T', ' ')})`,
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setLastSaved({ ok: false, msg: `Erro ${res.status}: ${json?.error || 'Falha'}` })
+      } else {
+        setLastSaved({
+          ok: true,
+          msg: `Cores salvas às ${new Date().toLocaleTimeString('pt-BR')}. Aguarde ~30s para aparecer no site.`,
+          commitUrl: json.commitUrl,
+        })
+      }
+    } catch (err: any) {
+      setLastSaved({ ok: false, msg: err?.message || 'Erro de rede.' })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   function adicionarProduto() {
     const nextIdx = products.length + 1
@@ -82,6 +112,23 @@ export default function AdminDashboardPage() {
     setCategories((prev) => [...prev, template])
     setTimeout(() => {
       const last = document.querySelectorAll('[data-admin-category-card]')
+      const el = last[last.length - 1]
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
+  function adicionarCor() {
+    const nextIdx = colors.length + 1
+    const idBase = `cor-${nextIdx}`
+    const template: ColorSwatch = {
+      id: idBase,
+      name: `Cor nova ${nextIdx}`,
+      label: `Cor ${nextIdx}`,
+      hex: '#8B2E3A',
+    }
+    setColors((prev) => [...prev, template])
+    setTimeout(() => {
+      const last = document.querySelectorAll('[data-admin-color-card]')
       const el = last[last.length - 1]
       el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 50)
@@ -232,13 +279,20 @@ export default function AdminDashboardPage() {
           <TabButton active={tab === 'categorias'} onClick={() => setTab('categorias')}>
             Categorias · {categories.length}
           </TabButton>
+          <TabButton active={tab === 'cores'} onClick={() => setTab('cores')}>
+            Cores · {colors.length}
+          </TabButton>
           {tab === 'produtos' ? (
             <button type="button" onClick={adicionarProduto} className="btn-outline text-xs">
               ＋ Adicionar produto
             </button>
-          ) : (
+          ) : tab === 'categorias' ? (
             <button type="button" onClick={adicionarCategoria} className="btn-outline text-xs">
               ＋ Adicionar categoria
+            </button>
+          ) : (
+            <button type="button" onClick={adicionarCor} className="btn-outline text-xs">
+              ＋ Adicionar cor
             </button>
           )}
           <div className="flex-1" />
@@ -246,9 +300,13 @@ export default function AdminDashboardPage() {
             <button type="button" disabled={saving} onClick={salvarProdutos} className="btn-bordo disabled:opacity-50">
               {saving ? 'Salvando produtos…' : 'Salvar todos os produtos (deploy)'}
             </button>
-          ) : (
+          ) : tab === 'categorias' ? (
             <button type="button" disabled={saving} onClick={salvarCategorias} className="btn-bordo disabled:opacity-50">
               {saving ? 'Salvando categorias…' : 'Salvar categorias (deploy)'}
+            </button>
+          ) : (
+            <button type="button" disabled={saving} onClick={salvarCores} className="btn-bordo disabled:opacity-50">
+              {saving ? 'Salvando cores…' : 'Salvar cores (deploy)'}
             </button>
           )}
         </div>
@@ -309,6 +367,21 @@ export default function AdminDashboardPage() {
                             Mais amada
                           </span>
                         )}
+                        {p.colorIds?.length > 0 && (
+                          <div className="mt-2 flex items-center gap-1.5">
+                            {p.colorIds.map((cid) => {
+                              const sw = colors.find((c) => c.id === cid)
+                              return (
+                                <span
+                                  key={cid}
+                                  title={sw?.name || cid}
+                                  className="inline-block h-4 w-4 rounded-full border border-vinho/30"
+                                  style={{ backgroundColor: sw?.hex || '#ccc' }}
+                                />
+                              )
+                            })}
+                          </div>
+                        )}
                       </div>
                     </button>
                   )
@@ -334,6 +407,7 @@ export default function AdminDashboardPage() {
                     key={selected.id}
                     product={selected}
                     categories={categories}
+                    colors={colors}
                     uploading={uploading}
                     onChange={(k, v) => atualizarCampoProduto(selected.id, k, v)}
                     onUpload={(ev, idx) => trocarFotoProduto(ev, selected, idx)}
@@ -346,7 +420,7 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </div>
-        ) : (
+        ) : tab === 'categorias' ? (
           <CategoryEditor
             categories={categories}
             onChange={(i, k, v) => {
@@ -355,6 +429,21 @@ export default function AdminDashboardPage() {
                 return
               }
               setCategories((prev) => {
+                const next = [...prev]
+                next[i] = { ...next[i], [k]: v }
+                return next
+              })
+            }}
+          />
+        ) : (
+          <ColorEditor
+            colors={colors}
+            onChange={(i, k, v) => {
+              if (k === '__DELETE__') {
+                setColors((prev) => prev.filter((_, idx) => idx !== i))
+                return
+              }
+              setColors((prev) => {
                 const next = [...prev]
                 next[i] = { ...next[i], [k]: v }
                 return next
@@ -392,16 +481,24 @@ function TabButton({
 function ProductEditor({
   product,
   categories,
+  colors,
   uploading,
   onChange,
   onUpload,
 }: {
   product: Product
   categories: Category[]
+  colors: ColorSwatch[]
   uploading: string | null
   onChange: (key: keyof Product, value: any) => void
   onUpload: (e: ChangeEvent<HTMLInputElement>, imageIndex: number) => void
 }) {
+  function toggleColor(colorId: string, checked: boolean) {
+    const next = new Set(product.colorIds || [])
+    if (checked) next.add(colorId)
+    else next.delete(colorId)
+    onChange('colorIds', Array.from(next))
+  }
   return (
     <div data-admin-editor-scroll className="sticky top-[190px] space-y-4 rounded-sm border border-bordo/20 bg-white/60 p-5">
       <div>
@@ -494,6 +591,36 @@ function ProductEditor({
             />
             Mais amada
           </label>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <p className="label-eyebrow">Cores disponíveis desta peça</p>
+        <div className="grid grid-cols-2 gap-2 pt-1">
+          {colors.map((c) => {
+            const checked = product.colorIds?.includes(c.id) || false
+            return (
+              <label
+                key={c.id}
+                className={`flex items-center gap-2 rounded-sm border px-2 py-1.5 text-xs ${
+                  checked ? 'border-bordo bg-creme-deep' : 'border-bordo/15 hover:border-bordo/40'
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  className="shrink-0"
+                  checked={checked}
+                  onChange={(e) => toggleColor(c.id, e.target.checked)}
+                />
+                <span
+                  className="inline-block h-4 w-4 shrink-0 rounded-full border border-vinho/30"
+                  style={{ backgroundColor: c.hex }}
+                  aria-hidden
+                />
+                <span className="truncate">{c.label}</span>
+              </label>
+            )
+          })}
         </div>
       </div>
 
@@ -628,6 +755,86 @@ function CategoryEditor({
               <option value="landscape_4_3">Paisagem 4:3</option>
               <option value="square_hd">Quadrado</option>
             </select>
+          </Field>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ColorEditor({
+  colors,
+  onChange,
+}: {
+  colors: ColorSwatch[]
+  onChange: (index: number, key: string | keyof ColorSwatch, value: any) => void
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {colors.map((c, i) => (
+        <div
+          key={c.id}
+          data-admin-color-card
+          className="relative rounded-sm border border-bordo/20 bg-white/60 p-5 space-y-3"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              if (!confirm(`Excluir cor "${c.name}" permanentemente? (só é salvo ao clicar em Salvar cores)`)) return
+              onChange(i, '__DELETE__', true as any)
+            }}
+            className="absolute right-3 top-3 z-10 text-[11px] text-rose-700 hover:underline underline-offset-4"
+            title="Excluir esta cor"
+          >
+            🗑️ Excluir
+          </button>
+          <div className="flex items-center gap-3">
+            <div
+              className="h-16 w-16 shrink-0 rounded-full border-2 border-vinho/25 shadow-inner"
+              style={{ backgroundColor: c.hex }}
+              title={`Cor ${c.name}`}
+            />
+            <div className="flex-1 min-w-0">
+              <p className="truncate font-serif text-lg leading-tight">{c.label}</p>
+              <p className="text-xs uppercase tracking-widest text-bordo">{c.id}</p>
+            </div>
+          </div>
+          <Field label="ID da cor (slug)">
+            <input
+              className="input-admin"
+              value={c.id}
+              onChange={(e) => onChange(i, 'id', e.target.value)}
+            />
+          </Field>
+          <Field label="Nome completo (SEO)">
+            <input
+              className="input-admin"
+              value={c.name}
+              onChange={(e) => onChange(i, 'name', e.target.value)}
+            />
+          </Field>
+          <Field label="Rótulo curto (swatch)">
+            <input
+              className="input-admin"
+              value={c.label}
+              onChange={(e) => onChange(i, 'label', e.target.value)}
+            />
+          </Field>
+          <Field label="Código HEX (#)">
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                className="h-10 w-12 shrink-0 cursor-pointer rounded-sm border border-bordo/20 bg-transparent"
+                value={/^#[0-9a-fA-F]{6}$/.test(c.hex) ? c.hex : '#8B2E3A'}
+                onChange={(e) => onChange(i, 'hex', e.target.value)}
+              />
+              <input
+                className="input-admin flex-1 font-mono text-sm"
+                value={c.hex}
+                pattern="#[0-9a-fA-F]{6}"
+                onChange={(e) => onChange(i, 'hex', e.target.value)}
+              />
+            </div>
           </Field>
         </div>
       ))}
