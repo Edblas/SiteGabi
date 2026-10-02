@@ -3,8 +3,6 @@ import { unauthorized, verifyToken } from '../_lib/auth'
 import { commitFiles } from '../_lib/github'
 import seedJson from '../../frontend/src/data/seed.json' assert { type: 'json' }
 
-export const config = { runtime: 'nodejs20.x' }
-
 const SEED_JSON_PATH = 'frontend/src/data/seed.json'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
