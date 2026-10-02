@@ -18,6 +18,75 @@ export default function AdminDashboardPage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [uploading, setUploading] = useState<string | null>(null)
 
+  function adicionarProduto() {
+    const nextIdx = products.length + 1
+    const padded = String(nextIdx).padStart(3, '0')
+    const newId = `P-${padded}-NOVO`
+    const slugBase = `novo-produto-${nextIdx}`
+    const firstSlug: any = categories[0]?.slug ?? 'vestidos'
+    const template: Product = {
+      id: newId,
+      slug: slugBase,
+      name: `Novo produto ${nextIdx} · (clique para editar)`,
+      subtitle: 'Adicione o subtítulo aqui',
+      category: firstSlug,
+      isNew: true,
+      isBestSeller: false,
+      priceInCents: 19900,
+      promotionalPriceInCents: undefined,
+      shortDescription: 'Descrição curta · texto chamativo de até 2 linhas.',
+      longDescription:
+        'Descrição longa completa: fale sobre caimento, modelagem, ocasião de uso e tudo o que a cliente precisa saber antes de comprar.',
+      composition: '100% poliéster (exemplo — edite com a composição real).',
+      care: 'Lavar à mão · não torcer · secar à sombra (edite conforme a peça).',
+      colorIds: [],
+      availableSizes: ['P', 'M', 'G'],
+      variations: [
+        {
+          sku: newId,
+          colorId: '',
+          size: 'M',
+          stock: 10,
+        },
+      ],
+      images: [
+        {
+          url: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=fashion%20photo%20of%20a%20woman%20wearing%20elegant%20bordeaux%20clothes%20cream%20studio%20background%20editorial%20amorena%20moda%20feminina&image_size=portrait_4_3',
+          alt: 'Foto do produto (troque clicando em Trocar foto)',
+        },
+        {
+          url: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=fashion%20editorial%20photo%20detail%20bordeaux%20cream%20texture%20fabric%20close%20up%20amorena&image_size=portrait_4_3',
+          alt: 'Detalhe do produto (troque clicando em Trocar foto)',
+        },
+      ],
+    }
+    setProducts((prev) => [...prev, template])
+    setSelectedProductId(template.id)
+    setTimeout(() => {
+      const editor = document.querySelector('[data-admin-editor-scroll]')
+      editor?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
+  function adicionarCategoria() {
+    const nextIdx = categories.length + 1
+    const slugBase: any = `categoria-nova-${nextIdx}`
+    const template: Category = {
+      slug: slugBase,
+      name: `Nova categoria ${nextIdx}`,
+      eyebrow: `0${nextIdx} · Nova categoria`,
+      lead: 'Frase chamativa da categoria · descreva a vibe das peças.',
+      heroPrompt: 'fashion editorial bordeaux cream amorena moda feminina outfit inspiration pinterest cover',
+      heroSize: 'landscape_16_9',
+    }
+    setCategories((prev) => [...prev, template])
+    setTimeout(() => {
+      const last = document.querySelectorAll('[data-admin-category-card]')
+      const el = last[last.length - 1]
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
   const selected = useMemo(
     () => products.find((p) => p.id === selectedProductId) || null,
     [products, selectedProductId]
@@ -163,6 +232,15 @@ export default function AdminDashboardPage() {
           <TabButton active={tab === 'categorias'} onClick={() => setTab('categorias')}>
             Categorias · {categories.length}
           </TabButton>
+          {tab === 'produtos' ? (
+            <button type="button" onClick={adicionarProduto} className="btn-outline text-xs">
+              ＋ Adicionar produto
+            </button>
+          ) : (
+            <button type="button" onClick={adicionarCategoria} className="btn-outline text-xs">
+              ＋ Adicionar categoria
+            </button>
+          )}
           <div className="flex-1" />
           {tab === 'produtos' ? (
             <button type="button" disabled={saving} onClick={salvarProdutos} className="btn-bordo disabled:opacity-50">
@@ -240,14 +318,27 @@ export default function AdminDashboardPage() {
 
             <div className="col-span-12 lg:col-span-5">
               {selected ? (
-                <ProductEditor
-                  key={selected.id}
-                  product={selected}
-                  categories={categories}
-                  uploading={uploading}
-                  onChange={(k, v) => atualizarCampoProduto(selected.id, k, v)}
-                  onUpload={(ev, idx) => trocarFotoProduto(ev, selected, idx)}
-                />
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!confirm('Excluir este produto permanentemente? (esta ação é salva só depois de clicar em Salvar todos os produtos)')) return
+                      setProducts((prev) => prev.filter((p) => p.id !== selectedProductId))
+                      setSelectedProductId(null)
+                    }}
+                    className="absolute right-3 top-3 z-10 text-xs text-rose-700 hover:underline underline-offset-4"
+                  >
+                    🗑️ Excluir produto
+                  </button>
+                  <ProductEditor
+                    key={selected.id}
+                    product={selected}
+                    categories={categories}
+                    uploading={uploading}
+                    onChange={(k, v) => atualizarCampoProduto(selected.id, k, v)}
+                    onUpload={(ev, idx) => trocarFotoProduto(ev, selected, idx)}
+                  />
+                </div>
               ) : (
                 <div className="rounded-sm border border-dashed border-bordo/30 p-10 text-center text-vinho/60">
                   Clique em um produto ao lado para editar.
@@ -259,6 +350,10 @@ export default function AdminDashboardPage() {
           <CategoryEditor
             categories={categories}
             onChange={(i, k, v) => {
+              if ((k as string) === '__DELETE__') {
+                setCategories((prev) => prev.filter((_, idx) => idx !== i))
+                return
+              }
               setCategories((prev) => {
                 const next = [...prev]
                 next[i] = { ...next[i], [k]: v }
@@ -308,7 +403,7 @@ function ProductEditor({
   onUpload: (e: ChangeEvent<HTMLInputElement>, imageIndex: number) => void
 }) {
   return (
-    <div className="sticky top-[190px] space-y-4 rounded-sm border border-bordo/20 bg-white/60 p-5">
+    <div data-admin-editor-scroll className="sticky top-[190px] space-y-4 rounded-sm border border-bordo/20 bg-white/60 p-5">
       <div>
         <p className="label-eyebrow mb-2">Fotos do produto</p>
         <div className="grid grid-cols-2 gap-4">
@@ -468,12 +563,23 @@ function CategoryEditor({
   onChange,
 }: {
   categories: Category[]
-  onChange: (index: number, key: keyof Category, value: any) => void
+  onChange: (index: number, key: string | keyof Category, value: any) => void
 }) {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {categories.map((c, i) => (
-        <div key={c.slug} className="rounded-sm border border-bordo/20 bg-white/60 p-5 space-y-3">
+        <div key={c.slug} data-admin-category-card className="relative rounded-sm border border-bordo/20 bg-white/60 p-5 space-y-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (!confirm(`Excluir categoria "${c.name}" permanentemente? (só é salvo ao clicar em Salvar categorias)`)) return
+              onChange(i, '__DELETE__', true as any)
+            }}
+            className="absolute right-3 top-3 z-10 text-[11px] text-rose-700 hover:underline underline-offset-4"
+            title="Excluir esta categoria"
+          >
+            🗑️ Excluir
+          </button>
           <div className="flex items-baseline justify-between">
             <span className="font-serif italic text-lg text-bordo">0{i + 1}</span>
             <input
