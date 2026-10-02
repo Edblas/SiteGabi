@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { unauthorized, verifyToken } from '../_lib/auth.js'
+import { unauthorized, verifyToken, isOriginAllowed } from '../_lib/auth.js'
 import { commitFiles } from '../_lib/github.js'
 
 const PUBLIC_PREFIX_PATH = 'frontend/public/'
@@ -14,6 +14,11 @@ interface UploadBody {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Método não permitido' })
+    return
+  }
+
+  if (!isOriginAllowed(req.headers['origin'])) {
+    res.status(403).json({ error: 'Origem não autorizada.' })
     return
   }
 

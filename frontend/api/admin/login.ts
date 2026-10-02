@@ -1,5 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { signToken, verifyPassword, hashPassword } from '../_lib/auth.js'
+import {
+  signToken,
+  verifyPassword,
+  hashPassword,
+  isOriginAllowed,
+  consumeRateLimit,
+} from '../_lib/auth.js'
 
 interface LoginBody {
   password?: string
@@ -13,6 +19,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    const origin = req.headers['origin']
+    if (!isOriginAllowed(origin)) {
+      res.status(403).json({ error: 'Origem não autorizada.' })
+      return
+    }
+
+    const remoteIp =
+      (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0]?.trim() ||
+      (req.headers['x-real-ip'] as string | undefined) ||
+      undefined
+
+    const rate = await consumeRateLimit(remoteIp)
+    if (!rate.ok) {
+      res.setHeader('Retry-After', Math.ceil(rate.retryAfterMs / 1000))
+      res.status(429).json({
+        error: 'Muitas tentativas. Aguarde alguns minutos antes de tentar de novo.',
+        retryAfterSeconds: Math.ceil(rate.retryAfterMs / 1000),
+      })
+      return
+    }
+
     const { password, _generateHash } = (req.body || {}) as LoginBody
 
     if (_generateHash && _generateHash.length >= 6) {
@@ -36,7 +63,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(200).json({
       ok: true,
       token,
-      expiresInDays: 7,
+      expiresInDays: process.env.NODE_ENV === 'production' ? 1 : 7,
     })
   } catch (err: any) {
     res.status(500).json({ error: err?.message || 'Erro interno.' })
