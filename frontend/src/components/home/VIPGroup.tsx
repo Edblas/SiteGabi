@@ -49,7 +49,7 @@ export default function VIPGroup() {
           <ul className="mt-10 space-y-3 text-sm text-creme/80">
             <li className="flex items-baseline gap-3 border-b border-creme/15 pb-3">
               <span className="font-serif italic text-2xl text-rose-nude">01</span>
-              Cupom de 15% no primeiro pedido do grupo
+              Cupom de 10% no primeiro pedido do grupo
             </li>
             <li className="flex items-baseline gap-3 border-b border-creme/15 pb-3">
               <span className="font-serif italic text-2xl text-rose-nude">02</span>
