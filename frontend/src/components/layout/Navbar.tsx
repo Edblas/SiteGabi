@@ -49,24 +49,6 @@ function BagIcon({ className = '' }: { className?: string }) {
   )
 }
 
-function UserIcon({ className = '' }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="8" r="3.8" />
-      <path d="M5 20c1.5-3.5 4.4-5.5 7-5.5s5.5 2 7 5.5" />
-    </svg>
-  )
-}
-
 function MenuIcon({ open }: { open: boolean }) {
   return (
     <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
@@ -140,9 +122,6 @@ export default function Navbar() {
             className="p-2 text-vinho hover:text-bordo"
           >
             <SearchIcon className="h-5 w-5" />
-          </button>
-          <button type="button" aria-label="Acessar minha conta" className="hidden sm:inline-flex p-2 text-vinho hover:text-bordo">
-            <UserIcon className="h-5 w-5" />
           </button>
           <button
             type="button"

@@ -2,7 +2,7 @@ export default function AnnouncementBar() {
   const items = [
     'Até 6x sem juros',
     'Envio para todo o Brasil',
-    '8% OFF na 1ª compra',
+    '10% OFF à vista',
     'Trocas em até 30 dias',
   ]
 

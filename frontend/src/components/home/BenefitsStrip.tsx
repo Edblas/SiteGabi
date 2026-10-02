@@ -3,7 +3,7 @@ const ITEMS = [
     n: '01',
     eyebrow: 'Pagamento',
     title: 'Até 6x sem juros',
-    copy: 'No cartão em até 6 vezes sem juros, ou 8% OFF à vista e Pix.',
+    copy: 'No cartão em até 6 vezes sem juros, ou 10% OFF à vista e Pix.',
   },
   {
     n: '02',
@@ -13,9 +13,9 @@ const ITEMS = [
   },
   {
     n: '03',
-    eyebrow: 'Boas-vindas',
-    title: '8% OFF na 1ª compra',
-    copy: 'Desconto liberado automaticamente após o primeiro cadastro. Válido para todo o site.',
+    eyebrow: 'Desconto',
+    title: '10% OFF à vista',
+    copy: 'Aplicado automaticamente em todo o site no Pix e transferência. Sem cadastro necessário.',
   },
   {
     n: '04',
