@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { signToken, verifyPassword, hashPassword } from '../_lib/auth'
+import { signToken, verifyPassword, hashPassword } from '../_lib/auth.js'
 
 interface LoginBody {
   password?: string

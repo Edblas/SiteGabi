@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { unauthorized, verifyToken } from '../_lib/auth'
-import { commitFiles } from '../_lib/github'
+import { unauthorized, verifyToken } from '../_lib/auth.js'
+import { commitFiles } from '../_lib/github.js'
 import seedJson from '../../src/data/seed.json' assert { type: 'json' }
 
 const SEED_JSON_PATH = 'frontend/src/data/seed.json'

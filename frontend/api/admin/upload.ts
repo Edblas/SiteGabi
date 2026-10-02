@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { unauthorized, verifyToken } from '../_lib/auth'
-import { commitFiles } from '../_lib/github'
+import { unauthorized, verifyToken } from '../_lib/auth.js'
+import { commitFiles } from '../_lib/github.js'
 
 const PUBLIC_PREFIX_PATH = 'frontend/public/'
 
