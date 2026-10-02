@@ -7,9 +7,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/((?!api/|assets/|favicon\\.ico|og-image\\.|hero-landing).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/((?!assets/|favicon\\.ico|og-image\\.|hero-landing).*)", "destination": "/index.html" }
   ]
 }
