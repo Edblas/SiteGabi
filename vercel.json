@@ -3,11 +3,6 @@
   "framework": "vite",
   "cleanUrls": true,
   "trailingSlash": false,
-  "functions": {
-    "frontend/api/**/*.ts": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "rewrites": [
     {
       "source": "/((?!api/|assets/|favicon\\.ico|og-image\\.|hero-landing).*)",

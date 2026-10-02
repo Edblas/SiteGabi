@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { signToken, verifyPassword, hashPassword } from '../_lib/auth'
 
+export const config = { runtime: 'nodejs20.x' }
+
 interface LoginBody {
   password?: string
   _generateHash?: string

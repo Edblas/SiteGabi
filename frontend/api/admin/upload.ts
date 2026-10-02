@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { unauthorized, verifyToken } from '../_lib/auth'
 import { commitFiles } from '../_lib/github'
 
+export const config = { runtime: 'nodejs20.x' }
+
 const PUBLIC_PREFIX_PATH = 'frontend/public/'
 
 interface UploadBody {
