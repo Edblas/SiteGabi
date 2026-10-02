@@ -370,5 +370,34 @@
       "variations": [{ "sku": "AMO-012-PE-UN", "colorId": "creme", "size": "Único", "stock": 3 }],
       "tags": ["ultimas-unidades"]
     }
-  ]
+  ],
+  "content": {
+    "heroColecao": {
+      "eyebrow": "Coleção 01 · Outono Inverno",
+      "headlineLine1": "Peças que",
+      "headlineLine2": "vestem você",
+      "headlineLine3": "— de corpo inteiro.",
+      "paragraph": "A nova coleção Amorena pensa no tempo lento, nos gestos simples e na roupa que acompanha — nunca atrapalha.",
+      "badge": "Nova coleção",
+      "imageUrl": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20fashion%20full%20body%20portrait%20of%20elegant%20brazilian%20woman%20wearing%20burgundy%20tailored%20midi%20dress%20and%20nude%20leather%20mules%20standing%20in%20minimal%20cream%20studio%20soft%20side%20lighting%20shadows%20on%20wall%20vogue%20magazine%20aesthetic%20shot%20on%20medium%20format%20film&image_size=landscape_4_3",
+      "imageAlt": "Editorial — vestido midi de alfaiataria bordô",
+      "primaryButton": { "label": "Comprar coleção", "link": "/loja/colecao", "variant": "solid" },
+      "secondaryButton": { "label": "Ver conjuntos", "link": "/loja/categoria/conjuntos", "variant": "ghost" },
+      "stats": [
+        { "eyebrow": "Peças", "value": "120+" },
+        { "eyebrow": "Envio", "value": "Brasil" },
+        { "eyebrow": "Trocas", "value": "30d" }
+      ]
+    },
+    "heroLanding": {
+      "imageUrl": "/hero-landing.jpeg",
+      "imageAlt": "Editorial Amorena — modelo em vestido longo estampado com parede de pedra ao fundo"
+    },
+    "benefits": [
+      { "n": "01", "eyebrow": "Pagamento", "title": "Até 6x sem juros", "copy": "No cartão em até 6 vezes sem juros, ou 10% OFF à vista e Pix." },
+      { "n": "02", "eyebrow": "Logística", "title": "Envio para todo o Brasil", "copy": "Correios e transportadoras parceiras. Código de rastreio em todos os pedidos." },
+      { "n": "03", "eyebrow": "Desconto", "title": "10% OFF à vista", "copy": "Aplicado automaticamente em todo o site no Pix e transferência. Sem cadastro necessário." },
+      { "n": "04", "eyebrow": "Confiança", "title": "Trocas em até 30 dias", "copy": "Não serviu? Trocamos. Sem burocracia, sem letras miúdas." }
+    ]
+  }
 }

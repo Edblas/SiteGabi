@@ -6,21 +6,21 @@ import StoreAddressBlock from '../components/landing/StoreAddressBlock'
 import { siteConfig } from '../config/siteConfig'
 import { trackEvent } from '../hooks/useAnalytics'
 import useSEO from '../hooks/useSEO'
+import { CONTENT } from '../data/seed'
 
-const heroImageLocal = '/hero-landing.jpeg'
-const heroImageLocalAlt = '/hero-landing.jpg'
 const heroImageFallback =
   'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=' +
   encodeURIComponent(
     'editorial black and white fashion portrait of brazilian woman wearing cream linen dress standing in minimal studio asymmetric crop soft grain texture film look vogue magazine aesthetic medium format'
   ) +
   '&image_size=portrait_4_3'
-const heroAltText =
-  'Editorial Amorena — modelo em vestido longo estampado com parede de pedra ao fundo'
 
 export default function LandingPage() {
   const navigate = useNavigate()
   const [showStore, setShowStore] = useState(false)
+  const heroImageLocal = CONTENT.heroLanding.imageUrl
+  const heroImageLocalAlt = heroImageLocal.endsWith('.jpg') ? heroImageLocal.replace(/\.jpg$/i, '.jpeg') : heroImageLocal.replace(/\.jpeg$/i, '.jpg')
+  const heroAltText = CONTENT.heroLanding.imageAlt
   const [heroSrc, setHeroSrc] = useState<string>(heroImageLocal)
   const heroTriedRef = useRef(0)
 

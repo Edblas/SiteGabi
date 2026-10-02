@@ -1,10 +1,10 @@
 import { useMemo, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { COLORS, PRODUCTS, CATEGORIES, formatCurrency } from '../data/seed'
-import type { Category, ColorSwatch, Product } from '../types/product'
+import { COLORS, PRODUCTS, CATEGORIES, CONTENT, formatCurrency } from '../data/seed'
+import type { Category, ColorSwatch, Product, SiteContent } from '../types/product'
 import { clearAdminToken, getAdminToken } from '../components/admin/ProtectedRoute'
 
-type Tab = 'produtos' | 'categorias' | 'cores'
+type Tab = 'produtos' | 'categorias' | 'cores' | 'conteudo'
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate()
@@ -13,11 +13,41 @@ export default function AdminDashboardPage() {
   const [products, setProducts] = useState<Product[]>(() => JSON.parse(JSON.stringify(PRODUCTS)))
   const [categories, setCategories] = useState<Category[]>(() => JSON.parse(JSON.stringify(CATEGORIES)))
   const [colors, setColors] = useState<ColorSwatch[]>(() => JSON.parse(JSON.stringify(COLORS)))
+  const [content, setContent] = useState<SiteContent>(() => JSON.parse(JSON.stringify(CONTENT)))
 
   const [saving, setSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<{ ok: boolean; msg: string; commitUrl?: string } | null>(null)
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [uploading, setUploading] = useState<string | null>(null)
+
+  async function salvarConteudo() {
+    setSaving(true)
+    setLastSaved(null)
+    try {
+      const res = await fetch('/api/admin/content', {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          content,
+          message: `chore(admin): atualizar conteúdo site (${new Date().toISOString().slice(0, 16).replace('T', ' ')})`,
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setLastSaved({ ok: false, msg: `Erro ${res.status}: ${json?.error || 'Falha'}` })
+      } else {
+        setLastSaved({
+          ok: true,
+          msg: `Conteúdo salvo às ${new Date().toLocaleTimeString('pt-BR')}. Aguarde ~30s para aparecer no site.`,
+          commitUrl: json.commitUrl,
+        })
+      }
+    } catch (err: any) {
+      setLastSaved({ ok: false, msg: err?.message || 'Erro de rede.' })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   async function salvarCores() {
     setSaving(true)
@@ -241,6 +271,43 @@ export default function AdminDashboardPage() {
     }
   }
 
+  async function trocarFotoConteudo(ev: ChangeEvent<HTMLInputElement>, targetPath: 'heroColecao.imageUrl' | 'heroLanding.imageUrl', altPath: 'heroColecao.imageAlt' | 'heroLanding.imageAlt') {
+    const file = ev.target.files?.[0]
+    if (!file) return
+    const key = `${targetPath}#${Date.now()}`
+    setUploading(key)
+    try {
+      const ext = file.type === 'image/png' ? 'png' : 'jpg'
+      const slugFolder = targetPath.startsWith('heroColecao') ? 'colecao' : 'landing'
+      const fileName = `${slugFolder}-hero.${ext}`
+      const filePath = `conteudo/${fileName}`
+      const base64 = await fileToBase64(file)
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          filePath,
+          base64,
+          alt: altPath.includes('colecao') ? content.heroColecao.imageAlt : content.heroLanding.imageAlt,
+          message: `feat(admin): upload foto conteudo ${slugFolder} hero`,
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        alert(`Erro no upload: ${json?.error || 'Falha'}`)
+        return
+      }
+      if (targetPath === 'heroColecao.imageUrl') {
+        setContent((prev) => ({ ...prev, heroColecao: { ...prev.heroColecao, imageUrl: json.url, imageAlt: json.alt || prev.heroColecao.imageAlt } }))
+      } else {
+        setContent((prev) => ({ ...prev, heroLanding: { ...prev.heroLanding, imageUrl: json.url, imageAlt: json.alt || prev.heroLanding.imageAlt } }))
+      }
+    } finally {
+      setUploading(null)
+      ev.target.value = ''
+    }
+  }
+
   function atualizarCampoProduto(productId: string, key: keyof Product, value: any) {
     setProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, [key]: value } : p)))
   }
@@ -282,6 +349,9 @@ export default function AdminDashboardPage() {
           <TabButton active={tab === 'cores'} onClick={() => setTab('cores')}>
             Cores · {colors.length}
           </TabButton>
+          <TabButton active={tab === 'conteudo'} onClick={() => setTab('conteudo')}>
+            Conteúdo · site
+          </TabButton>
           {tab === 'produtos' ? (
             <button type="button" onClick={adicionarProduto} className="btn-outline text-xs">
               ＋ Adicionar produto
@@ -290,11 +360,11 @@ export default function AdminDashboardPage() {
             <button type="button" onClick={adicionarCategoria} className="btn-outline text-xs">
               ＋ Adicionar categoria
             </button>
-          ) : (
+          ) : tab === 'cores' ? (
             <button type="button" onClick={adicionarCor} className="btn-outline text-xs">
               ＋ Adicionar cor
             </button>
-          )}
+          ) : null}
           <div className="flex-1" />
           {tab === 'produtos' ? (
             <button type="button" disabled={saving} onClick={salvarProdutos} className="btn-bordo disabled:opacity-50">
@@ -304,9 +374,13 @@ export default function AdminDashboardPage() {
             <button type="button" disabled={saving} onClick={salvarCategorias} className="btn-bordo disabled:opacity-50">
               {saving ? 'Salvando categorias…' : 'Salvar categorias (deploy)'}
             </button>
-          ) : (
+          ) : tab === 'cores' ? (
             <button type="button" disabled={saving} onClick={salvarCores} className="btn-bordo disabled:opacity-50">
               {saving ? 'Salvando cores…' : 'Salvar cores (deploy)'}
+            </button>
+          ) : (
+            <button type="button" disabled={saving} onClick={salvarConteudo} className="btn-bordo disabled:opacity-50">
+              {saving ? 'Salvando conteúdo…' : 'Salvar conteúdo (deploy)'}
             </button>
           )}
         </div>
@@ -435,7 +509,7 @@ export default function AdminDashboardPage() {
               })
             }}
           />
-        ) : (
+        ) : tab === 'cores' ? (
           <ColorEditor
             colors={colors}
             onChange={(i, k, v) => {
@@ -449,6 +523,14 @@ export default function AdminDashboardPage() {
                 return next
               })
             }}
+          />
+        ) : (
+          <ContentEditor
+            content={content}
+            uploading={uploading}
+            onChangeContent={setContent}
+            onUploadHeroColecao={(ev) => trocarFotoConteudo(ev, 'heroColecao.imageUrl', 'heroColecao.imageAlt')}
+            onUploadHeroLanding={(ev) => trocarFotoConteudo(ev, 'heroLanding.imageUrl', 'heroLanding.imageAlt')}
           />
         )}
       </main>
@@ -838,6 +920,281 @@ function ColorEditor({
           </Field>
         </div>
       ))}
+    </div>
+  )
+}
+
+function ContentEditor({
+  content,
+  uploading,
+  onChangeContent,
+  onUploadHeroColecao,
+  onUploadHeroLanding,
+}: {
+  content: import('../types/product').SiteContent
+  uploading: string | null
+  onChangeContent: (updater: (prev: any) => any) => void
+  onUploadHeroColecao: (ev: ChangeEvent<HTMLInputElement>) => void
+  onUploadHeroLanding: (ev: ChangeEvent<HTMLInputElement>) => void
+}) {
+  function setHeroColecaoField<K extends keyof typeof content.heroColecao>(key: K, value: any) {
+    onChangeContent((prev: any) => ({ ...prev, heroColecao: { ...prev.heroColecao, [key]: value } }))
+  }
+  function setHeroLandingField<K extends keyof typeof content.heroLanding>(key: K, value: any) {
+    onChangeContent((prev: any) => ({ ...prev, heroLanding: { ...prev.heroLanding, [key]: value } }))
+  }
+  function setStat(i: 0 | 1 | 2, k: 'eyebrow' | 'value', v: string) {
+    onChangeContent((prev: any) => {
+      const stats = [...prev.heroColecao.stats] as any[]
+      stats[i] = { ...stats[i], [k]: v }
+      return { ...prev, heroColecao: { ...prev.heroColecao, stats } }
+    })
+  }
+  function setBtn(which: 'primaryButton' | 'secondaryButton', k: 'label' | 'link' | 'variant', v: any) {
+    onChangeContent((prev: any) => ({
+      ...prev,
+      heroColecao: { ...prev.heroColecao, [which]: { ...prev.heroColecao[which], [k]: v } },
+    }))
+  }
+  function setBenefit(i: 0 | 1 | 2 | 3, k: 'n' | 'eyebrow' | 'title' | 'copy', v: string) {
+    onChangeContent((prev: any) => {
+      const benefits = [...prev.benefits] as any[]
+      benefits[i] = { ...benefits[i], [k]: v }
+      return { ...prev, benefits }
+    })
+  }
+  return (
+    <div className="space-y-12">
+      <section className="space-y-4">
+      <p className="label-eyebrow">Bloco 01 · Hero página inicial (Landing)</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="col-span-12 lg:col-span-5">
+          <div className="relative aspect-[4/3.1] overflow-hidden rounded-sm border border-bordo/15 bg-creme-deep">
+            <img
+              src={content.heroLanding.imageUrl}
+              alt={content.heroLanding.imageAlt}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="mt-3">
+            <label className="btn-outline inline-flex w-full cursor-pointer text-center text-xs">
+              {uploading?.startsWith('heroLanding') ? 'Enviando foto…' : '📷 Trocar foto hero landing'}
+              <input type="file" accept="image/*" className="hidden" onChange={onUploadHeroLanding} disabled={!!uploading} />
+            </label>
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-7 space-y-3">
+          <Field label="Alt (acessibilidade da foto)">
+            <input
+              className="input-admin"
+              value={content.heroLanding.imageAlt}
+              onChange={(e) => setHeroLandingField('imageAlt', e.target.value)}
+            />
+          </Field>
+          <Field label="URL foto (se quiser colar externa)">
+            <input
+              className="input-admin"
+              value={content.heroLanding.imageUrl}
+              onChange={(e) => setHeroLandingField('imageUrl', e.target.value)}
+            />
+          </Field>
+          <p className="text-[11px] text-vinho/60 italic pt-1">
+            Dica: para foto do hero da landing, você pode trocar a foto JPG na pasta /public/hero-landing.jpeg no seu computador se preferir (upload via painel salva em /conteudo/landing-hero.jpg automaticamente).
+          </p>
+        </div>
+      </div>
+      </section>
+
+      <hr className="border-bordo/10" />
+
+      <section className="space-y-4">
+      <p className="label-eyebrow">Bloco 02 · Hero página Loja (/loja) · Coleção 01</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="col-span-12 lg:col-span-5">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-bordo/10 bg-creme-deep">
+            <img
+              src={content.heroColecao.imageUrl}
+              alt={content.heroColecao.imageAlt}
+              className="h-full w-full object-cover"
+            />
+            <span className="absolute left-4 top-4 chip bg-creme/85 backdrop-blur">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-bordo" />
+              {content.heroColecao.badge}
+            </span>
+          </div>
+          <div className="mt-3">
+            <label className="btn-outline inline-flex w-full cursor-pointer text-center text-xs">
+              {uploading?.startsWith('heroColecao') ? 'Enviando foto…' : '📷 Trocar foto hero coleção (página /loja)'}
+              <input type="file" accept="image/*" className="hidden" onChange={onUploadHeroColecao} disabled={!!uploading} />
+            </label>
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-7 space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Eyebrow">
+              <input
+                className="input-admin"
+                value={content.heroColecao.eyebrow}
+                onChange={(e) => setHeroColecaoField('eyebrow', e.target.value)}
+              />
+            </Field>
+            <Field label="Badge (canto superior esquerdo foto)">
+              <input
+                className="input-admin"
+                value={content.heroColecao.badge}
+                onChange={(e) => setHeroColecaoField('badge', e.target.value)}
+              />
+            </Field>
+          </div>
+          <p className="label-eyebrow pt-2">Headline (3 linhas, linha 2 fica itálico bordô)</p>
+          <div className="grid grid-cols-3 gap-3">
+            <Field label="Linha 1">
+              <input
+                className="input-admin"
+                value={content.heroColecao.headlineLine1}
+                onChange={(e) => setHeroColecaoField('headlineLine1', e.target.value)}
+              />
+            </Field>
+            <Field label="Linha 2 (itálico)">
+              <input
+                className="input-admin"
+                value={content.heroColecao.headlineLine2}
+                onChange={(e) => setHeroColecaoField('headlineLine2', e.target.value)}
+              />
+            </Field>
+            <Field label="Linha 3">
+              <input
+                className="input-admin"
+                value={content.heroColecao.headlineLine3}
+                onChange={(e) => setHeroColecaoField('headlineLine3', e.target.value)}
+              />
+            </Field>
+          </div>
+          <Field label="Parágrafo (texto intro coleção)">
+            <textarea
+              className="input-admin min-h-[120px]"
+              value={content.heroColecao.paragraph}
+              onChange={(e) => setHeroColecaoField('paragraph', e.target.value)}
+            />
+          </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Botão 1 · Primário (bordo)">
+              <div className="grid grid-cols-3 gap-2">
+                <input
+                  className="input-admin col-span-2"
+                  value={content.heroColecao.primaryButton.label}
+                  placeholder="Label botão"
+                  onChange={(e) => setBtn('primaryButton', 'label', e.target.value)}
+                />
+                <input
+                  className="input-admin"
+                  value={content.heroColecao.primaryButton.link}
+                  placeholder="/loja/colecao"
+                  onChange={(e) => setBtn('primaryButton', 'link', e.target.value)}
+                />
+              </div>
+            </Field>
+            <Field label="Botão 2 · Secundário (fantasma)">
+              <div className="grid grid-cols-3 gap-2">
+                <input
+                  className="input-admin col-span-2"
+                  value={content.heroColecao.secondaryButton.label}
+                  placeholder="Label botão"
+                  onChange={(e) => setBtn('secondaryButton', 'label', e.target.value)}
+                />
+                <input
+                  className="input-admin"
+                  value={content.heroColecao.secondaryButton.link}
+                  placeholder="/loja/categoria/conjuntos"
+                  onChange={(e) => setBtn('secondaryButton', 'link', e.target.value)}
+                />
+              </div>
+            </Field>
+          </div>
+          <p className="label-eyebrow pt-2">3 Stats (rodape bloco esquerdo hero colecao)</p>
+          <div className="grid grid-cols-3 gap-3">
+            {[0, 1, 2].map((i) => (
+            <div key={i} className="space-y-2">
+              <Field label={`Stat ${i + 1} · Label (eyebrow)`}>
+                <input
+                  className="input-admin"
+                  value={(content.heroColecao.stats as any[])[i]?.eyebrow || ''}
+                  onChange={(e) => setStat(i as 0 | 1 | 2, 'eyebrow', e.target.value)}
+                />
+              </Field>
+              <Field label="Stat · Valor">
+                <input
+                  className="input-admin"
+                  value={(content.heroColecao.stats as any[])[i]?.value || ''}
+                  onChange={(e) => setStat(i as 0 | 1 | 2, 'value', e.target.value)}
+                />
+              </Field>
+            </div>
+            ))}
+          </div>
+          <Field label="URL foto">
+            <input
+              className="input-admin"
+              value={content.heroColecao.imageUrl}
+              onChange={(e) => setHeroColecaoField('imageUrl', e.target.value)}
+            />
+          </Field>
+          <Field label="Alt foto (acessibilidade)">
+            <input
+              className="input-admin"
+              value={content.heroColecao.imageAlt}
+              onChange={(e) => setHeroColecaoField('imageAlt', e.target.value)}
+            />
+          </Field>
+        </div>
+      </div>
+      </section>
+
+      <hr className="border-bordo/10" />
+
+      <section className="space-y-4">
+      <p className="label-eyebrow">Bloco 03 · 4 Benefícios (Pagamento / Logística / Desconto / Confiança)</p>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => {
+          const b = content.benefits[i]
+          const k = i as 0 | 1 | 2 | 3
+          return (
+            <div key={i} className="space-y-2 rounded-sm border border-bordo/15 bg-white/60 p-4">
+              <div className="grid grid-cols-2 gap-2">
+                <Field label="Nº">
+                  <input
+                    className="input-admin"
+                    value={b.n}
+                    onChange={(e) => setBenefit(k, 'n', e.target.value)}
+                  />
+                </Field>
+                <Field label="Eyebrow">
+                  <input
+                    className="input-admin"
+                    value={b.eyebrow}
+                    onChange={(e) => setBenefit(k, 'eyebrow', e.target.value)}
+                  />
+                </Field>
+              </div>
+              <Field label="Título">
+                <input
+                  className="input-admin"
+                  value={b.title}
+                  onChange={(e) => setBenefit(k, 'title', e.target.value)}
+                />
+              </Field>
+              <Field label="Texto copy">
+                <textarea
+                  className="input-admin min-h-[90px]"
+                  value={b.copy}
+                  onChange={(e) => setBenefit(k, 'copy', e.target.value)}
+                />
+              </Field>
+            </div>
+          )
+        })}
+      </div>
+      </section>
     </div>
   )
 }

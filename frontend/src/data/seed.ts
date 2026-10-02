@@ -1,7 +1,7 @@
 import type { Category, ColorSwatch, Product } from '../types/product'
-import { COLORS, CATEGORIES, PRODUCTS, seedJson } from './seed-data'
+import { COLORS, CATEGORIES, PRODUCTS, CONTENT, seedJson } from './seed-data'
 
-export { COLORS, CATEGORIES, PRODUCTS, seedJson }
+export { COLORS, CATEGORIES, PRODUCTS, CONTENT, seedJson }
 
 export const getColor = (id: string): ColorSwatch | undefined =>
   COLORS.find((c) => c.id === id)

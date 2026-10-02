@@ -71,3 +71,46 @@ export interface AppliedFilters {
   maxPrice?: number
   sort: SortOption
 }
+
+export interface SiteHeroStat {
+  eyebrow: string
+  value: string
+}
+
+export interface SiteCtaButton {
+  label: string
+  link: string
+  variant: 'solid' | 'ghost'
+}
+
+export interface SiteHeroColecao {
+  eyebrow: string
+  headlineLine1: string
+  headlineLine2: string
+  headlineLine3: string
+  paragraph: string
+  badge: string
+  imageUrl: string
+  imageAlt: string
+  primaryButton: SiteCtaButton
+  secondaryButton: SiteCtaButton
+  stats: [SiteHeroStat, SiteHeroStat, SiteHeroStat]
+}
+
+export interface SiteHeroLanding {
+  imageUrl: string
+  imageAlt: string
+}
+
+export interface SiteBenefitItem {
+  n: string
+  eyebrow: string
+  title: string
+  copy: string
+}
+
+export interface SiteContent {
+  heroColecao: SiteHeroColecao
+  heroLanding: SiteHeroLanding
+  benefits: [SiteBenefitItem, SiteBenefitItem, SiteBenefitItem, SiteBenefitItem]
+}
